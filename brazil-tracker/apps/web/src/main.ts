@@ -148,7 +148,9 @@ function renderBanner() {
 function renderSummary() {
   const x = state.summary?.data;
   if (!x) return;
-  setText('counted', fmtPct(x.countedPct));
+  const left = x.sections.total - x.sections.counted;
+  // 2-decimal rounding shows "100,00%" while a few sections are still out; be exact near the end.
+  setText('counted', !x.complete && left > 0 && x.countedPct >= 99.99 ? `${nf2.format(99.99)}%+ (осталось ${fmtInt(left)} уч.)` : fmtPct(x.countedPct));
   $('counted-bar').style.width = `${Math.min(100, x.countedPct)}%`;
   setText('lula-pct', fmtPct(x.candidates.lula.pct));
   setText('flavio-pct', fmtPct(x.candidates.flavio.pct));
