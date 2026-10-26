@@ -183,11 +183,21 @@ function renderSummary() {
   const be = x.breakEven;
   sec.hidden = x.complete || be.lulaNeedsPctOfRemaining === null;
   if (!sec.hidden) {
-    setText('be-lula', fmtPct(be.lulaNeedsPctOfRemaining!));
-    setText('be-flavio', fmtPct(be.flavioNeedsPctOfRemaining!));
-    const hint = (v: number) => (v > 100 ? 'недостижимо арифметически' : v <= 0 ? 'уже достаточно' : 'оставшихся голосов');
-    $('be-lula-hint').textContent = hint(be.lulaNeedsPctOfRemaining!);
-    $('be-flavio-hint').textContent = hint(be.flavioNeedsPctOfRemaining!);
+    const show = (key: string, hintId: string, v: number) => {
+      // Outside 0..100% the raw number is arithmetic noise; say what it means and keep the number in the hint.
+      if (v > 100) {
+        setText(key, 'недостижимо');
+        $(hintId).textContent = `нужно ${fmtPct(v)} оставшихся голосов`;
+      } else if (v <= 0) {
+        setText(key, 'уже достаточно');
+        $(hintId).textContent = `формально ${fmtPct(v)} оставшихся`;
+      } else {
+        setText(key, fmtPct(v));
+        $(hintId).textContent = 'оставшихся голосов';
+      }
+    };
+    show('be-lula', 'be-lula-hint', be.lulaNeedsPctOfRemaining!);
+    show('be-flavio', 'be-flavio-hint', be.flavioNeedsPctOfRemaining!);
   }
 }
 
@@ -305,7 +315,7 @@ function renderStates() {
     .map(
       (r) => `<tr class="${r.stale ? 'stale' : ''}">
       <td><strong>${r.uf}</strong>${r.complete ? '<span class="tag">100%</span>' : ''}<span class="sub2">${r.name}</span></td>
-      <td class="r">${fmtPct(r.countedPct)}<span class="sub2">${r.remainingValidVotesEst ? `ост. ≈${fmtShort(r.remainingValidVotesEst)}` : '&nbsp;'}</span></td>
+      <td class="r">${fmtPct(r.countedPct)}<span class="sub2">${r.remainingValidVotesEst ? `≈${fmtShort(r.remainingValidVotesEst)}` : '&nbsp;'}</span></td>
       <td class="r">${fmtPct(r.flavio.pct)}<span class="sub2">Л ${fmtPct(r.lula.pct)}</span></td>
       <td class="r">${leadCell(r)}</td>
     </tr>`,

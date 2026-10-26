@@ -111,7 +111,7 @@ main.wrap { display: grid; gap: 14px; padding-top: 14px; padding-bottom: 8px; }
 .be-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .be { border-radius: 10px; padding: 10px; background: color-mix(in srgb, var(--line) 45%, transparent); }
 .be-name { font-size: 0.9rem; font-weight: 600; }
-.be-val { font-size: 1.7rem; font-weight: 700; }
+.be-val { font-size: 1.7rem; font-weight: 700; overflow-wrap: anywhere; line-height: 1.2; }
 .be.lula .be-val { color: var(--lula); }
 .be.flavio .be-val { color: var(--flavio); }
 .be-hint { font-size: 0.8rem; color: var(--muted); }
