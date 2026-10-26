@@ -1,0 +1,23 @@
+{
+  "name": "brazil-tracker",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npm run build:web && wrangler dev --config workers/api/wrangler.toml",
+    "dev:web": "vite --config apps/web/vite.config.ts",
+    "build": "npm run build:web",
+    "build:web": "vite build --config apps/web/vite.config.ts",
+    "test": "vitest run",
+    "typecheck": "tsc -p workers/api/tsconfig.json --noEmit && tsc -p apps/web/tsconfig.json --noEmit",
+    "fixtures": "node scripts/build-fixtures.mjs",
+    "deploy": "npm run build:web && wrangler deploy --config workers/api/wrangler.toml"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261025.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.7",
+    "vitest": "^3.2.7",
+    "wrangler": "^4.152.0"
+  }
+}

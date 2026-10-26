@@ -1,0 +1,25 @@
+{
+ "election": "6258",
+ "points": [
+  {
+   "t": "2026-10-25T23:54:44.000Z",
+   "sourceUpdatedAt": "2026-10-25T20:54:44-03:00",
+   "countedPct": 82.32,
+   "lulaPct": 51.38,
+   "flavioPct": 48.62,
+   "marginVotes": 2798424,
+   "marginPp": 2.75,
+   "leader": "lula"
+  },
+  {
+   "t": "2026-10-26T00:00:04.000Z",
+   "sourceUpdatedAt": "2026-10-25T21:00:04-03:00",
+   "countedPct": 88.33,
+   "lulaPct": 51.52,
+   "flavioPct": 48.48,
+   "marginVotes": 3314403,
+   "marginPp": 3.04,
+   "leader": "lula"
+  }
+ ]
+}
