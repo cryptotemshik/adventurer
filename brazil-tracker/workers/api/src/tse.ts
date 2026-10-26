@@ -196,14 +196,15 @@ export function regionRow(c: Counts): RegionRow {
     marginVotes: Math.abs(c.lula - c.flavio),
     flavioMinusLulaVotes: c.flavio - c.lula,
     remainingValidVotesEst: c.final ? 0 : remainingValidVotes(c.electorate, c.electorateCounted, c.validVotes),
-    complete: c.final || c.countedPct >= 100,
+    complete: c.final || (c.sectionsTotal > 0 && c.sectionsCounted >= c.sectionsTotal),
     sourceUpdatedAt: c.sourceUpdatedAt,
   };
 }
 
 export function buildSummary(c: Counts, meta: { fetchedAt: string; stale: boolean; ageSeconds: number; error?: string; sourceUrl: string }): Summary {
   const sh = shares(c);
-  const complete = c.final;
+  // TSE sets tf/and only when totalization is formally closed (round 1: next day), so 100% of sections also counts.
+  const complete = c.final || (c.sectionsTotal > 0 && c.sectionsCounted >= c.sectionsTotal);
   const counted = Math.min(1, c.countedPct / 100);
   const be = complete ? { lulaNeedsPctOfRemaining: null, flavioNeedsPctOfRemaining: null } : breakEven(counted, sh.flavio / 100);
   return {

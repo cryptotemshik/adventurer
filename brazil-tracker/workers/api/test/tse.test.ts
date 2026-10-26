@@ -66,6 +66,16 @@ describe('parseUnified + buildSummary', () => {
     expect(buildSummary(parseUnified(doc, cfg), meta).winner).toBeNull();
   });
 
+  it('all sections counted reads as complete even before TSE sets tf', () => {
+    const doc = JSON.parse(JSON.stringify(partial));
+    doc.s.st = doc.s.ts;
+    doc.s.pstn = '100';
+    const s = buildSummary(parseUnified(doc, cfg), meta);
+    expect(s.complete).toBe(true);
+    expect(s.breakEven.lulaNeedsPctOfRemaining).toBeNull();
+    expect(s.winner).toBe('lula');
+  });
+
   it('rejects unexpected documents', () => {
     expect(() => parseUnified({}, cfg)).toThrow();
     expect(() => parseUnified({ s: {}, v: {}, carg: [] }, cfg)).toThrow(/candidates/);
