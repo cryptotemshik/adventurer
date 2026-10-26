@@ -20,6 +20,56 @@
    "marginVotes": 3314403,
    "marginPp": 3.04,
    "leader": "lula"
+  },
+  {
+   "t": "2026-10-26T00:04:44.000Z",
+   "sourceUpdatedAt": "2026-10-25T21:04:44-03:00",
+   "countedPct": 93.15,
+   "lulaPct": 51.67,
+   "flavioPct": 48.33,
+   "marginVotes": 3856957,
+   "marginPp": 3.35,
+   "leader": "lula"
+  },
+  {
+   "t": "2026-10-26T00:09:54.000Z",
+   "sourceUpdatedAt": "2026-10-25T21:09:54-03:00",
+   "countedPct": 98.76,
+   "lulaPct": 51.75,
+   "flavioPct": 48.25,
+   "marginVotes": 4289380,
+   "marginPp": 3.5,
+   "leader": "lula"
+  },
+  {
+   "t": "2026-10-26T00:14:49.000Z",
+   "sourceUpdatedAt": "2026-10-25T21:14:49-03:00",
+   "countedPct": 99.77,
+   "lulaPct": 51.76,
+   "flavioPct": 48.24,
+   "marginVotes": 4350257,
+   "marginPp": 3.51,
+   "leader": "lula"
+  },
+  {
+   "t": "2026-10-26T00:19:32.000Z",
+   "sourceUpdatedAt": "2026-10-25T21:19:32-03:00",
+   "countedPct": 99.82,
+   "lulaPct": 51.76,
+   "flavioPct": 48.24,
+   "marginVotes": 4361829,
+   "marginPp": 3.52,
+   "leader": "lula"
+  },
+  {
+   "t": "2026-10-26T00:24:47.000Z",
+   "sourceUpdatedAt": "2026-10-25T21:24:47-03:00",
+   "countedPct": 99.86,
+   "lulaPct": 51.76,
+   "flavioPct": 48.24,
+   "marginVotes": 4368888,
+   "marginPp": 3.53,
+   "leader": "lula"
   }
  ]
 }
