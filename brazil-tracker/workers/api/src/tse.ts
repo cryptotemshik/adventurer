@@ -111,7 +111,8 @@ export function parseUnified(doc: any, cfg: Pick<TseConfig, 'lulaNumber' | 'flav
     lulaPct: pct(lula),
     flavioPct: pct(flavio),
     final,
-    mathematicallyDefined: doc.md === 's',
+    // md: 'n' while open; observed 'e' at 98.76% on 25.10.2026 (TSE "matematicamente definido").
+    mathematicallyDefined: typeof doc.md === 'string' && doc.md !== '' && doc.md !== 'n',
     elected,
   };
 }
@@ -216,7 +217,8 @@ export function buildSummary(c: Counts, meta: { fetchedAt: string; stale: boolea
     sections: { total: c.sectionsTotal, counted: c.sectionsCounted },
     complete,
     mathematicallyDefined: c.mathematicallyDefined,
-    winner: complete || c.mathematicallyDefined ? c.elected : null,
+    // Candidate flag e='s' is authoritative; when TSE only says "mathematically defined" the leader is the one.
+    winner: c.elected ?? (complete || c.mathematicallyDefined ? (c.lula > c.flavio ? 'lula' : c.flavio > c.lula ? 'flavio' : null) : null),
     candidates: { lula: { votes: c.lula, pct: round(sh.lula, 2) }, flavio: { votes: c.flavio, pct: round(sh.flavio, 2) } },
     marginVotes: Math.abs(c.lula - c.flavio),
     marginPp: round(Math.abs(sh.lula - sh.flavio), 2),

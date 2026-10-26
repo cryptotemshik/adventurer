@@ -119,6 +119,13 @@ describe('alerts', () => {
     expect(r.next.thresholdsHit).toEqual([0.5]);
   });
 
+  it('mathematically defined fires once', () => {
+    const st = evaluateAlerts(initialAlertState(), summary({}), 0, opts).next;
+    const r = evaluateAlerts(st, summary({ mathematicallyDefined: true, winner: 'lula' }), 1, opts);
+    expect(r.messages.join()).toMatch(/математически определён: Лула/);
+    expect(evaluateAlerts(r.next, summary({ mathematicallyDefined: true, winner: 'lula' }), 2, opts).messages).toEqual([]);
+  });
+
   it('completion fires once', () => {
     const st = evaluateAlerts(initialAlertState(), summary({}), 0, opts).next;
     const r = evaluateAlerts(st, summary({ complete: true, winner: 'lula' }), 1, opts);

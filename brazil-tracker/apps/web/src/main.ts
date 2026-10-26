@@ -166,6 +166,7 @@ function renderSummary() {
     badge.hidden = !x.mathematicallyDefined;
     badge.textContent = 'Математически определён (TSE)';
     $('lead-line').textContent = name ? `Впереди ${name}: отрыв ${fmtInt(x.marginVotes)} голосов (${nf2.format(x.marginPp)} п.п.)` : 'Равенство голосов';
+    if (x.mathematicallyDefined) $('lead-line').textContent += '. TSE отметил результат как математически определённый, подсчёт продолжается.';
   }
   const facts: [string, string][] = [
     ['Участков', `${fmtInt(x.sections.counted)} из ${fmtInt(x.sections.total)}`],

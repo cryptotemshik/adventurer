@@ -5,6 +5,7 @@ export interface AlertState {
   leader: Leader | null;
   thresholdsHit: number[];
   completeSent: boolean;
+  definedSent?: boolean;
   staleSent: boolean;
   lastSourceUpdatedAt: string | null;
   lastSourceChangeAt: number | null; // epoch ms when sourceUpdatedAt last changed (or first seen)
@@ -62,6 +63,12 @@ export function evaluateAlerts(prev: AlertState, summary: Summary | null, now: n
       } else if (hit && summary.marginPp > th + opts.hysteresisPp) {
         next.thresholdsHit = next.thresholdsHit.filter((x) => x !== th);
       }
+    }
+
+    if (summary.mathematicallyDefined && !summary.complete && !prev.definedSent) {
+      const w = summary.winner ? `: ${NAMES[summary.winner]}` : '';
+      messages.push(`TSE: результат математически определён${w}. ${status}`);
+      next.definedSent = true;
     }
 
     if (summary.complete && !prev.completeSent) {

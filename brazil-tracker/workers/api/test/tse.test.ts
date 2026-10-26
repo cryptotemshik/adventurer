@@ -55,6 +55,17 @@ describe('parseUnified + buildSummary', () => {
     expect(s.remainingValidVotesEst).toBe(0);
   });
 
+  it("treats md='e' (observed live at 98.76%) as mathematically defined, leader as winner", () => {
+    const doc = JSON.parse(JSON.stringify(partial));
+    doc.md = 'e';
+    const s = buildSummary(parseUnified(doc, cfg), meta);
+    expect(s.mathematicallyDefined).toBe(true);
+    expect(s.complete).toBe(false);
+    expect(s.winner).toBe('lula');
+    doc.md = 'n';
+    expect(buildSummary(parseUnified(doc, cfg), meta).winner).toBeNull();
+  });
+
   it('rejects unexpected documents', () => {
     expect(() => parseUnified({}, cfg)).toThrow();
     expect(() => parseUnified({ s: {}, v: {}, carg: [] }, cfg)).toThrow(/candidates/);
