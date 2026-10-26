@@ -184,6 +184,7 @@ function renderSummary() {
   sec.hidden = x.complete || be.lulaNeedsPctOfRemaining === null;
   if (!sec.hidden) {
     const show = (key: string, hintId: string, v: number) => {
+      document.querySelector(`[data-k="${key}"]`)?.classList.toggle('be-word', v > 100 || v <= 0);
       // Outside 0..100% the raw number is arithmetic noise; say what it means and keep the number in the hint.
       if (v > 100) {
         setText(key, 'недостижимо');
