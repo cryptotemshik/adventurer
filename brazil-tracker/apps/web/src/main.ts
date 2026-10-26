@@ -15,7 +15,8 @@ const nf3 = new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 3, maximumFr
 const fmtInt = (n: number) => nf0.format(n);
 const fmtPct = (n: number) => `${nf2.format(n)}%`;
 const fmtPx = (n: number | null) => (n === null ? '—' : nf3.format(n));
-const fmtShort = (n: number) => (n >= 1e6 ? `${nf2.format(n / 1e6)} млн` : n >= 1e4 ? `${nf0.format(Math.round(n / 1000))} тыс.` : fmtInt(n));
+const nf1 = new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const fmtShort = (n: number) => (n >= 1e6 ? `${(n >= 1e7 ? nf1 : nf2).format(n / 1e6)}\u00a0млн` : n >= 1e4 ? `${nf0.format(Math.round(n / 1000))}\u00a0тыс.` : fmtInt(n));
 
 const tf = (tz: string) => new Intl.DateTimeFormat('ru-RU', { timeZone: tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' });
 const tBRT = tf('America/Sao_Paulo');

@@ -34,7 +34,7 @@ new_sqlite_classes = ["Tracker"]
 [[ratelimits]]
 name = "RATE_LIMITER"
 namespace_id = "62581"
-simple = { limit = 120, period = 60 }
+simple = { limit = 600, period = 60 }  # generous: mobile carriers put many users behind one IP (CGNAT)
 
 # Alerts + history sampling once a minute.
 [triggers]

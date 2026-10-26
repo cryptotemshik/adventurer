@@ -103,7 +103,7 @@ main.wrap { display: grid; gap: 14px; padding-top: 14px; padding-bottom: 8px; }
 .split-f { background: repeating-linear-gradient(45deg, var(--flavio-bar) 0 4px, color-mix(in srgb, var(--flavio-bar) 70%, transparent) 4px 7px); flex: 1; }
 .split-mid { position: absolute; left: 50%; top: -2px; bottom: -2px; width: 2px; background: var(--text); }
 .lead-line { font-weight: 600; margin: 4px 0 8px; }
-.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 4px 12px; margin: 0; font-size: 0.88rem; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0 16px; margin: 0; font-size: 0.88rem; }
 .facts div { display: flex; justify-content: space-between; gap: 6px; border-bottom: 1px dashed var(--line); padding: 2px 0; }
 .facts dt { color: var(--muted); }
 .facts dd { margin: 0; font-variant-numeric: tabular-nums; text-align: right; }
@@ -138,6 +138,9 @@ main.wrap { display: grid; gap: 14px; padding-top: 14px; padding-bottom: 8px; }
 .tbl th.r { text-align: right; }
 .tbl td { padding: 6px 4px; border-bottom: 1px solid var(--line); vertical-align: top; font-variant-numeric: tabular-nums; }
 .tbl th:nth-child(1) { width: 34%; }
+.tbl th:nth-child(4) { width: 27%; }
+.lead-l, .lead-f { white-space: nowrap; }
+@media (max-width: 420px) { .tbl { font-size: 0.85rem; } .tbl th:nth-child(1) { width: 30%; } }
 .tbl td .sub2 { display: block; font-size: 0.76rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tbl tr.stale td { opacity: 0.6; }
 .lead-l { color: var(--lula); font-weight: 600; }
