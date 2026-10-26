@@ -39,7 +39,12 @@ export default {
 
     if (env.REPLAY === '1' || url.searchParams.get('replay') === '1') return handleReplay(url, env);
 
-    // Edge cache (Cache API). Ignored on *.workers.dev, effective on a custom domain / route.
+    if (url.pathname === '/api/health') {
+      const res = await tracker(env).fetch(`https://tracker${url.pathname}`);
+      return respond(await res.text(), res.status, { 'cache-control': 'no-store' });
+    }
+
+    // Edge cache (Cache API), 5 s per Cloudflare location.
     const cacheKey = new Request(`${url.origin}${url.pathname}`, { method: 'GET' });
     const cache = (caches as unknown as { default: Cache }).default;
     const hit = await cache.match(cacheKey).catch(() => undefined);

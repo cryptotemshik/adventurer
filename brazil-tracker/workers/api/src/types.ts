@@ -132,6 +132,8 @@ export interface HealthResponse {
   now: string;
   version: string;
   replay: boolean;
+  /** in-memory counters below reset when the Durable Object restarts */
+  instanceStartedAt?: string;
   priceSource: string;
   priceSymbol: string;
   tseBaseUrl: string;

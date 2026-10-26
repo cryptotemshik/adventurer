@@ -39,6 +39,7 @@ export class Tracker extends DurableObject<Env> {
   private candlesInflight: Promise<void> | null = null;
   private markLastChangedAt: number | null = null;
   private lastSummaryKey: string | null = null;
+  private readonly startedAt = new Date().toISOString();
   private alertInfo: { lastSentAt: string | null; lastMessage: string | null } = { lastSentAt: null, lastMessage: null };
 
   constructor(ctx: DurableObjectState, env: Env) {
@@ -280,6 +281,7 @@ export class Tracker extends DurableObject<Env> {
       now: new Date(now).toISOString(),
       version: this.env.BUILD_VERSION ?? 'dev',
       replay: false,
+      instanceStartedAt: this.startedAt,
       priceSource: this.priceSource.name,
       priceSymbol: this.priceSource.symbol,
       tseBaseUrl: tseConfig(this.env).baseUrl,
