@@ -121,7 +121,7 @@ Replay (`?replay=1`, опционально `&frame=N`, `&scenario=complete|erro
     "tse":   { "lastSuccessAt": "…", "lastErrorAt": null, "lastError": null, "ageSeconds": 2, "upstreamRequests": 68 },
     "price": { … }
   },
-  "alerts": { "enabled": false, "lastSentAt": null, "lastMessage": null }
+  "alerts": { "enabled": false, "lastAt": "…", "lastMessage": "TSE: результат математически определён: Лула. …", "lastDelivered": false }
 }
 ```
 Не кэшируется.

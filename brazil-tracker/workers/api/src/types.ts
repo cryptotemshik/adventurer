@@ -138,5 +138,6 @@ export interface HealthResponse {
   priceSymbol: string;
   tseBaseUrl: string;
   sources: Record<string, SourceHealth>;
-  alerts: { enabled: boolean; lastSentAt: string | null; lastMessage: string | null };
+  /** last alert produced by the cron (logged always, delivered only when Telegram secrets are set) */
+  alerts: { enabled: boolean; lastAt: string | null; lastMessage: string | null; lastDelivered: boolean | null };
 }

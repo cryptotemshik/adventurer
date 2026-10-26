@@ -40,7 +40,6 @@ export class Tracker extends DurableObject<Env> {
   private markLastChangedAt: number | null = null;
   private lastSummaryKey: string | null = null;
   private readonly startedAt = new Date().toISOString();
-  private alertInfo: { lastSentAt: string | null; lastMessage: string | null } = { lastSentAt: null, lastMessage: null };
 
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
@@ -254,15 +253,17 @@ export class Tracker extends DurableObject<Env> {
     sql.exec(`INSERT OR REPLACE INTO kv (k, v) VALUES ('alerts', ?)`, JSON.stringify(next));
     const { TELEGRAM_BOT_TOKEN: token, TELEGRAM_CHAT_ID: chat } = this.env;
     for (const m of messages) {
+      let delivered = false;
       console.log(JSON.stringify({ alert: m, telegram: !!(token && chat) }));
       if (token && chat) {
         try {
           await sendTelegram(fetch, token, chat, m);
-          this.alertInfo = { lastSentAt: new Date().toISOString(), lastMessage: m };
+          delivered = true;
         } catch (err) {
           console.error('telegram', err);
         }
       }
+      sql.exec(`INSERT OR REPLACE INTO kv (k, v) VALUES ('alerts:last', ?)`, JSON.stringify({ at: new Date().toISOString(), message: m, delivered }));
     }
     return { messages };
   }
@@ -286,7 +287,11 @@ export class Tracker extends DurableObject<Env> {
       priceSymbol: this.priceSource.symbol,
       tseBaseUrl: tseConfig(this.env).baseUrl,
       sources: { tse: this.src('tse'), price: this.src('price') },
-      alerts: { enabled: !!(this.env.TELEGRAM_BOT_TOKEN && this.env.TELEGRAM_CHAT_ID), ...this.alertInfo },
+      alerts: (() => {
+        const row = this.ctx.storage.sql.exec(`SELECT v FROM kv WHERE k = 'alerts:last'`).toArray()[0];
+        const last = row ? JSON.parse(row.v as string) : null;
+        return { enabled: !!(this.env.TELEGRAM_BOT_TOKEN && this.env.TELEGRAM_CHAT_ID), lastAt: last?.at ?? null, lastMessage: last?.message ?? null, lastDelivered: last?.delivered ?? null };
+      })(),
     };
   }
 
