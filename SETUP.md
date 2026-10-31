@@ -33,7 +33,7 @@ The vault of market #0 imports into Phantom with the master seed (account index 
    - `JOB_TOKEN` — 64 hex chars, the same value as the Cloudflare secret (step 3)
    - `SOLANA_RPC` — Helius free RPC URL
 3. Repository **secrets**: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` (for `deploy.yml`).
-4. Repository **variables**: `BIAS_DB_URL=https://bias.michaelworkarb.workers.dev/api/internal/sql`, `HL_NETWORK=testnet`, `TREASURY_PUBKEY=<platform vault from step 1>`, `BIAS_MINT` (empty until launch), `DRY_RUN=false`.
+4. Repository **variables**: `BIAS_DB_URL=https://biasonsol.fun/api/internal/sql`, `HL_NETWORK=testnet`, `TREASURY_PUBKEY=<platform vault from step 1>`, `BIAS_MINT` (empty until launch), `DRY_RUN=false`.
 
 Secrets are not readable from a public repo's logs or forks.
 

@@ -2,7 +2,7 @@
 
 Launch a coin on **pump.fun**, pick a position. The coin's creator fees fund a leveraged position on **Hyperliquid**; realized profit buys the coin back and burns it. Stops included.
 
-**Live:** https://bias.michaelworkarb.workers.dev (Cloudflare Workers free plan · Hyperliquid **testnet**)
+**Live:** https://biasonsol.fun (also https://bias.michaelworkarb.workers.dev) (Cloudflare Workers free plan · Hyperliquid **testnet**)
 
 - max 5× (pairs 3×, funding 1×), a stop-loss on the exchange from the first second, a take-profit ladder, a liquidation guard, cooldown & re-entry
 - fees split **70 / 20 / 10** — position / launcher / $BIAS buyback

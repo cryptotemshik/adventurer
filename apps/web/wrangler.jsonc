@@ -6,6 +6,10 @@
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
   "workers_dev": true,
+  "routes": [
+    { "pattern": "biasonsol.fun", "custom_domain": true },
+    { "pattern": "www.biasonsol.fun", "custom_domain": true }
+  ],
   "preview_urls": false,
   "observability": { "enabled": true },
   "durable_objects": {
@@ -13,7 +17,7 @@
   },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["BiasDb"] }],
   "vars": {
-    "NEXT_PUBLIC_SITE_URL": "https://bias.michaelworkarb.workers.dev",
+    "NEXT_PUBLIC_SITE_URL": "https://biasonsol.fun",
     "HL_NETWORK": "testnet",
     "LAUNCHES_ENABLED": "true",
     "TRADING_MODE": "normal",
