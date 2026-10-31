@@ -53,10 +53,10 @@ export function VotePanel({ market, vote, rounds }: { market: MarketView; vote: 
   return (
     <section className="panel p-4" aria-label="community vote">
       <div className="flex items-center justify-between">
-        <h2 className="font-display text-lg">🗳 holders&apos; bias</h2>
+        <h2 className="text-sm font-semibold">Holder vote</h2>
         {vote && <span className="num text-xs text-muted">closes in {left} · 00:00 utc</span>}
       </div>
-      <p className="mt-1 text-xs text-muted">sqrt-weighted, max 10% per wallet. needs ≥ 5 wallets and 1% of supply (sqrt) to count. one flip per 24h.</p>
+      <p className="mt-1 text-xs text-muted">Weight is the square root of the balance, max 10% per wallet. Needs at least 5 wallets and the √ of 1% of supply. At most one change per 24h.</p>
       {vote ? (
         <>
           <div className="mt-3 space-y-2">
@@ -82,7 +82,7 @@ export function VotePanel({ market, vote, rounds }: { market: MarketView; vote: 
             <div className="mt-3 grid grid-cols-3 gap-2">
               {(["long", "short", "flat"] as const).map((c) => (
                 <button key={c} className={`btn ${c === "long" ? "text-long" : c === "short" ? "text-short" : "text-flat"}`} disabled={!!busy} onClick={() => void cast(c)}>
-                  {busy === c ? "sign…" : labels[c]}
+                  {busy === c ? "Sign…" : labels[c]}
                 </button>
               ))}
             </div>
@@ -94,11 +94,11 @@ export function VotePanel({ market, vote, rounds }: { market: MarketView; vote: 
           {msg && <p className="mt-2 text-xs text-muted">{msg}</p>}
         </>
       ) : (
-        <p className="mt-3 text-sm text-muted">voting opens once the coin is live.</p>
+        <p className="mt-3 text-sm text-muted">Voting opens once the coin is live.</p>
       )}
       {rounds.length > 0 && (
         <details className="mt-3 text-xs">
-          <summary className="cursor-pointer text-muted">history</summary>
+          <summary className="cursor-pointer text-muted">History</summary>
           <ul className="num mt-2 space-y-1">
             {rounds.map((r) => (
               <li key={r.round} className="flex justify-between">

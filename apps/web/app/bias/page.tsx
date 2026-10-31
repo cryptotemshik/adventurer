@@ -9,7 +9,7 @@ import { MarketCard } from "@/components/MarketCard";
 import { EventFeed } from "@/components/EventFeed";
 import { TierCheck } from "./TierCheck";
 
-export const metadata: Metadata = { title: "$BIAS", description: "the flagship market. 10% of fees from every market buys back and burns $BIAS." };
+export const metadata: Metadata = { title: "$BIAS", description: "The flagship market. 10% of fees from every market buys back and burns $BIAS." };
 export const dynamic = "force-dynamic";
 
 export default async function BiasPage() {
@@ -26,8 +26,8 @@ export default async function BiasPage() {
   ] as const;
   return (
     <>
-      <h1 className="font-display text-4xl font-bold">
-        $BIAS <span className="text-muted">— the first market.</span>
+      <h1 className="text-xl font-semibold tracking-tight">
+        $BIAS
       </h1>
       <p className="mt-2 max-w-2xl text-sm text-muted">
         $BIAS is a market like any other: its creator fees fund a position on hyperliquid and profit buys back &amp; burns $BIAS. on top of that, 10% of
@@ -39,12 +39,12 @@ export default async function BiasPage() {
             <MarketCard m={flagship} />
           ) : (
             <div className="panel p-6">
-              <div className="num text-xs uppercase tracking-widest text-accent">not launched yet</div>
+              <div className="num text-xs uppercase tracking-widest text-accent">Not launched yet</div>
               <p className="mt-2 text-sm text-muted">flagship bias: BTC 40% / SOL 30% / HYPE 30% LONG 3×, community bias on.</p>
             </div>
           )}
           <section className="panel p-4">
-            <h2 className="font-display text-lg">platform buybacks</h2>
+            <h2 className="text-sm font-semibold">Platform buybacks</h2>
             <p className="num mt-1 text-sm">
               10% share routed: <span className="text-accent">{platformSol.toFixed(4)} SOL</span>
             </p>
@@ -55,7 +55,7 @@ export default async function BiasPage() {
         </div>
         <aside className="space-y-4">
           <section className="panel p-4">
-            <h2 className="font-display text-lg">holder tiers</h2>
+            <h2 className="text-sm font-semibold">Holder tiers</h2>
             {!cfg.BIAS_MINT && <p className="mt-1 text-xs text-accent">$BIAS isn&apos;t live yet — everyone counts as desk until it is.</p>}
             <ul className="mt-3 space-y-3 text-sm">
               {tiers.map(([t, n, perks]) => (
@@ -71,7 +71,7 @@ export default async function BiasPage() {
           <TierCheck />
           {flagship?.mint && (
             <Link href={`/t/${flagship.mint}`} className="btn btn-long w-full">
-              open the $BIAS market · {fmtUsd(flagship.equityUsd)}
+              Open the $BIAS market · {fmtUsd(flagship.equityUsd)}
             </Link>
           )}
         </aside>

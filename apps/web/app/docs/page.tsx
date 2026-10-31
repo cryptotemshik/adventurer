@@ -3,7 +3,7 @@ import { RULES, DISCLAIMER } from "@bias/shared";
 import { getConfig } from "@/lib/config";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "docs", description: "how bias works: markets, guardrails, fee split, bridge, custody, voting, risks." };
+export const metadata: Metadata = { title: "Docs", description: "How bias works: markets, guardrails, fee split, bridge, custody, voting, risks." };
 
 export default async function Docs() {
   const c = await getConfig();
@@ -11,8 +11,8 @@ export default async function Docs() {
   const lau = c.FEE_SPLIT_LAUNCHER_BPS / 100;
   const pla = c.FEE_SPLIT_PLATFORM_BPS / 100;
   const S = ({ id, title, children }: { id: string; title: string; children: React.ReactNode }) => (
-    <section id={id} className="panel scroll-mt-20 p-6">
-      <h2 className="font-display mb-3 text-2xl">{title}</h2>
+    <section id={id} className="scroll-mt-20 border-b border-line pb-6">
+      <h2 className="mb-3 text-base font-semibold">{title}</h2>
       <div className="space-y-3 text-sm leading-relaxed text-muted [&_b]:text-text">{children}</div>
     </section>
   );
@@ -40,8 +40,8 @@ export default async function Docs() {
         </ul>
       </nav>
       <div className="space-y-6">
-        <h1 className="font-display text-4xl font-bold">how bias works</h1>
-        <S id="market" title="a market = a coin + a position">
+        <h1 className="text-xl font-semibold tracking-tight">How bias works</h1>
+        <S id="market" title="A market is a coin plus a position">
           <p>
             you launch a coin on <b>pump.fun</b> through bias and pick its <b>bias</b>: a single asset long/short (1–{Math.min(5, c.MAX_LEVERAGE)}×), a basket of 2–3 assets (≤4×), a
             pair trade (long A / short B, ≤3×) or a funding farm (short perp + spot long, 1×). baskets, pairs and farms need the desk tier.
@@ -54,7 +54,7 @@ export default async function Docs() {
             realized profit is withdrawn back to solana, buys the coin on the market and <b>burns</b> it.
           </p>
         </S>
-        <S id="guardrails" title="guardrails">
+        <S id="guardrails" title="Guardrails">
           <ul className="list-disc space-y-1 pl-5">
             <li>
               <b>max leverage</b>: single 5×, basket 4×, pair 3×, funding 1×. leverage is lowered automatically for assets where the stop would sit too close to
@@ -85,7 +85,7 @@ export default async function Docs() {
             <li>each market has its own hyperliquid account with isolated margin. one market can&apos;t lose another&apos;s money.</li>
           </ul>
         </S>
-        <S id="fees" title="fee split">
+        <S id="fees" title="Fee split">
           <p>
             <b>{pos}%</b> → the position · <b>{lau}%</b> → whoever launched the market · <b>{pla}%</b> → buys back &amp; burns $BIAS.
           </p>
@@ -94,28 +94,28 @@ export default async function Docs() {
             {c.LAUNCH_FEE_SOL} SOL, free for $BIAS trader tier and above.
           </p>
         </S>
-        <S id="bridge" title="the bridge">
+        <S id="bridge" title="Bridge">
           <p>
             once the position share reaches {c.MIN_BRIDGE_SOL} SOL, it is bridged to hyperliquid via hyperunit (SOL arrives as spot SOL), sold for USDC and moved to
             the perp account. profits travel back the same way: USDC → SOL on hyperliquid spot → hyperunit → the market&apos;s vault → buyback. bridge and network
             fees are paid from the market&apos;s own fees.
           </p>
         </S>
-        <S id="custody" title="custody — read this">
+        <S id="custody" title="Custody">
           <p>
             bias is <b>custodial</b>. vault and hyperliquid keys are derived from a master seed held in github actions secrets; the website never sees a seed. trading
             uses a separate agent key that <b>can trade but cannot withdraw</b>. withdrawals only go to the market&apos;s own vault or to configured platform addresses.
             all addresses are public on <a href="/proof">/proof</a>.
           </p>
         </S>
-        <S id="voting" title="community bias">
+        <S id="voting" title="Holder vote">
           <p>
             on community markets holders vote <b>long / short / flat</b> every utc day (for pairs: A/B, B/A, flat). a vote is a signed message, not a transaction.
             weight = √balance, max 10% of the round per wallet. quorum: ≥ {RULES.VOTE_MIN_WALLETS} wallets and √({c.VOTE_QUORUM_SUPPLY_PCT}% of supply). the first job
             run after 00:00 utc applies the result: close, then reopen the other way (or stay flat). at most one flip per 24h.
           </p>
         </S>
-        <S id="lifecycle" title="lifecycle">
+        <S id="lifecycle" title="Lifecycle">
           <ul className="list-disc space-y-1 pl-5">
             <li>
               <b>waiting for fees</b> → <b>live</b> → after a stop-loss <b>cooldown</b> ({RULES.COOLDOWN_HOURS}h) → re-entry with fresh fees.
@@ -127,14 +127,14 @@ export default async function Docs() {
             </li>
           </ul>
         </S>
-        <S id="risks" title="risks">
+        <S id="risks" title="Risks">
           <p className="text-text">{DISCLAIMER}</p>
           <p>
             stops are trigger-market orders: in a fast market they can fill worse than the trigger. bridges can be slow. hyperliquid, hyperunit, pump.fun and
             solana are third-party systems. smart contracts and exchanges can fail. buybacks happen only if there is profit — nothing is guaranteed.
           </p>
         </S>
-        <S id="faq" title="faq">
+        <S id="faq" title="FAQ">
           <p>
             <b>can I withdraw the position?</b> no. the position belongs to the market. you earn {lau}% of fees as the launcher.
           </p>

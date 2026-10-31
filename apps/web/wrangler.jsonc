@@ -17,6 +17,7 @@
     "HL_NETWORK": "testnet",
     "LAUNCHES_ENABLED": "true",
     "TRADING_MODE": "normal",
-    "DRY_RUN": "false"
+    "DRY_RUN": "false",
+    "TREASURY_PUBKEY": "5dLSe3mUrMsekYFq4BjJTjW9rzb7zQwVvu1Rm5PVpWU7"
   }
 }

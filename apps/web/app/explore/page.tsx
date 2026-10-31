@@ -6,20 +6,20 @@ import { getDb } from "@/lib/db";
 import { toView } from "@/lib/view";
 import { Pnl, StatusBadge, StrategyBadge, Empty } from "@/components/ui";
 
-export const metadata: Metadata = { title: "explore", description: "every bias market in one table. export as CSV." };
+export const metadata: Metadata = { title: "Explore", description: "All bias markets in one table, exportable as CSV." };
 export const dynamic = "force-dynamic";
 
 const COLS: [MarketSort | null, string][] = [
-  [null, "market"],
-  [null, "strategy"],
-  [null, "status"],
-  ["mcap", "mcap"],
-  ["largest", "equity"],
-  ["pnl", "lifetime"],
-  [null, "fees→pos"],
-  ["burned", "bought back"],
-  ["tp", "to SL / liq"],
-  ["newest", "age"],
+  [null, "Market"],
+  [null, "Position"],
+  [null, "Status"],
+  ["mcap", "Mcap"],
+  ["largest", "Equity"],
+  ["pnl", "Lifetime"],
+  [null, "Fees → pos"],
+  ["burned", "Bought back"],
+  ["tp", "To SL / liq"],
+  ["newest", "Age"],
 ];
 
 export default async function Explore({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
@@ -28,30 +28,30 @@ export default async function Explore({ searchParams }: { searchParams: Promise<
   const rows = (await listMarkets(await getDb(), { sort, q: sp.q, status: sp.status?.split(","), limit: 500 })).map(toView);
   return (
     <>
-      <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-3 border-b border-line pb-4">
         <div>
-          <h1 className="font-display text-3xl font-bold">explore</h1>
+          <h1 className="text-xl font-semibold tracking-tight">Explore</h1>
           <p className="text-sm text-muted">{rows.length} markets{sp.q ? ` matching “${sp.q}”` : ""}</p>
         </div>
         <div className="flex gap-2">
           <form className="flex gap-2" action="/explore">
-            <input name="q" defaultValue={sp.q} className="input w-56" placeholder="search ticker / CA" aria-label="search" />
-            <button className="btn">search</button>
+            <input name="q" defaultValue={sp.q} className="input w-56" placeholder="Ticker or contract address" aria-label="search" />
+            <button className="btn">Search</button>
           </form>
           <a className="btn" href="/api/export/markets" download>
-            export CSV
+            Export CSV
           </a>
         </div>
       </div>
       {rows.length === 0 ? (
-        <Empty title="nothing here.">no markets match. launch one and it will be the only one.</Empty>
+        <Empty title="No matches." />
       ) : (
         <div className="panel overflow-x-auto">
-          <table className="num w-full min-w-[980px] text-sm">
-            <thead className="text-left text-xs text-muted">
+          <table className="grid-table num w-full min-w-[980px] text-[13px]">
+            <thead>
               <tr>
                 {COLS.map(([k, label]) => (
-                  <th key={label} className="px-3 py-2 font-normal">
+                  <th key={label}>
                     {k ? (
                       <Link href={`/explore?sort=${k}${sp.q ? `&q=${encodeURIComponent(sp.q)}` : ""}`} className={sort === k ? "text-long" : "hover:text-text"}>
                         {label}
@@ -65,12 +65,12 @@ export default async function Explore({ searchParams }: { searchParams: Promise<
             </thead>
             <tbody>
               {rows.map((m) => (
-                <tr key={m.id} className="border-t border-line hover:bg-panel-2">
+                <tr key={m.id}>
                   <td className="px-3 py-2">
                     <Link href={`/t/${m.mint}`} className="font-semibold hover:underline">
                       ${m.ticker}
                     </Link>
-                    {m.community && " 🗳"}
+                    {m.community && <span className="tag ml-2">vote</span>}
                   </td>
                   <td className="px-3">
                     <StrategyBadge label={m.strategyLabel} direction={m.direction} />

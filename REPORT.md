@@ -3,7 +3,9 @@
 **Live site:** https://bias.michaelworkarb.workers.dev (Cloudflare Worker `bias`, free plan, Hyperliquid **testnet**).
 Every page returns 200. The database (SQLite in a Durable Object) is live. Lighthouse on `/`: performance 91, accessibility 100, best practices 100, SEO 100.
 
-**Not live yet:** launches. The site needs your seeds first, see "What you must do" below.
+**Launches are open:** seeds were generated and 50 market addresses (vault + HL account + agent) are in the production address pool. `TREASURY_PUBKEY` is the platform vault `5dLSe3mUrMsekYFq4BjJTjW9rzb7zQwVvu1Rm5PVpWU7`.
+
+**Still needed from you:** paste the values from `.bias-secrets.txt` (repo root, git-ignored) into GitHub so the `tick` / `buyback` workflows run; the agent has no GitHub secrets API. Until then, creator fees stay safely in each market vault.
 
 ## What was built
 

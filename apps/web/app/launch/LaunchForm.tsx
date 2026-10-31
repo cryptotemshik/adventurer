@@ -182,22 +182,22 @@ export function LaunchForm({ allowlist, launchFeeSol, maxDevBuy, vaultRentSol, l
     )}`;
     return (
       <div className="panel mx-auto max-w-2xl p-6">
-        <div className="text-xs uppercase tracking-widest text-long">market live{done.dryRun ? " (dry run)" : ""}</div>
-        <h1 className="font-display mt-1 text-3xl">${ticker.toUpperCase()} has a bias.</h1>
+        <div className="label text-long">Market live{done.dryRun ? " (dry run)" : ""}</div>
+        <h1 className="mt-1 text-xl font-semibold">${ticker.toUpperCase()} is live</h1>
         <dl className="num mt-5 space-y-2 text-sm">
           <Row k="CA" v={done.mint} />
-          <Row k="solana vault" v={done.vault} />
-          <Row k="hyperliquid account" v={done.hlAccount} />
+          <Row k="Solana vault" v={done.vault} />
+          <Row k="Hyperliquid account" v={done.hlAccount} />
         </dl>
         <div className="mt-6 flex flex-wrap gap-2">
           <Link href={`/t/${done.mint}`} className="btn btn-long">
-            open market
+            Open market
           </Link>
           <a href={`https://pump.fun/coin/${done.mint}`} target="_blank" rel="noreferrer" className="btn">
             pump.fun
           </a>
           <a href={share} target="_blank" rel="noreferrer" className="btn">
-            share on X
+            Share on X
           </a>
         </div>
       </div>
@@ -208,51 +208,51 @@ export function LaunchForm({ allowlist, launchFeeSol, maxDevBuy, vaultRentSol, l
     <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
       <div className="space-y-6">
         <fieldset className="panel p-5">
-          <legend className="font-display px-1 text-lg">1. the coin</legend>
-          <p className="mb-4 text-xs text-muted">launched on pump.fun. creator fees go to this market&apos;s vault, not to a person.</p>
+          <legend className="label px-1">Coin</legend>
+          <p className="mb-4 text-xs text-muted">Launched on pump.fun. The creator is the market vault, so creator fees go to the market.</p>
           <div className="grid gap-4 sm:grid-cols-[120px_1fr]">
             <label className="grid aspect-square cursor-pointer place-items-center overflow-hidden rounded-lg border border-dashed border-line bg-bg text-center text-xs text-muted hover:border-[#3a404a]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              {imgUrl ? <img src={imgUrl} alt="coin preview" className="h-full w-full object-cover" /> : <span>image<br />1000×1000<br />≤ 4 MB</span>}
-              <input type="file" accept="image/png,image/jpeg,image/gif,image/webp" className="sr-only" onChange={(e) => setImage(e.target.files?.[0] ?? null)} aria-label="coin image" />
+              {imgUrl ? <img src={imgUrl} alt="coin preview" className="h-full w-full object-cover" /> : <span>Image<br />1000×1000<br />≤ 4 MB</span>}
+              <input type="file" accept="image/png,image/jpeg,image/gif,image/webp" className="sr-only" onChange={(e) => setImage(e.target.files?.[0] ?? null)} aria-label="Coin image" />
             </label>
             <div className="grid gap-3 sm:grid-cols-2">
-              <Field label="name" hint={`${name.length}/32`}>
+              <Field label="Name" hint={`${name.length}/32`}>
                 <input className="input" maxLength={32} value={name} onChange={(e) => setName(e.target.value)} placeholder="long boi" />
               </Field>
-              <Field label="ticker" hint={`${ticker.length}/10`}>
+              <Field label="Ticker" hint={`${ticker.length}/10`}>
                 <input className="input num uppercase" maxLength={10} value={ticker} onChange={(e) => setTicker(e.target.value.replace(/[^A-Za-z0-9]/g, ""))} placeholder="LONGBOI" />
               </Field>
-              <Field label="description" hint={`${description.length}/500`} className="sm:col-span-2">
+              <Field label="Description" hint={`${description.length}/500`} className="sm:col-span-2">
                 <textarea className="input min-h-20" maxLength={500} value={description} onChange={(e) => setDescription(e.target.value)} />
               </Field>
             </div>
           </div>
           {imageErr && <p className="mt-2 text-xs text-short">{imageErr}</p>}
           <div className="mt-3 grid gap-3 sm:grid-cols-4">
-            <Field label="x (optional)">
+            <Field label="X (optional)">
               <input className="input" value={twitter} onChange={(e) => setTwitter(e.target.value)} placeholder="https://x.com/…" />
             </Field>
-            <Field label="telegram (optional)">
+            <Field label="Telegram (optional)">
               <input className="input" value={telegram} onChange={(e) => setTelegram(e.target.value)} placeholder="https://t.me/…" />
             </Field>
-            <Field label="website (optional)">
+            <Field label="Website (optional)">
               <input className="input" value={website} onChange={(e) => setWebsite(e.target.value)} placeholder="https://…" />
             </Field>
-            <Field label={`dev buy (≤ ${maxDevBuy} SOL)`}>
+            <Field label={`Dev buy (≤ ${maxDevBuy} SOL)`}>
               <input className="input num" inputMode="decimal" value={devBuy} onChange={(e) => setDevBuy(e.target.value.replace(/[^0-9.]/g, ""))} />
             </Field>
           </div>
         </fieldset>
 
         <fieldset className="panel p-5">
-          <legend className="font-display px-1 text-lg">2. the bias</legend>
-          <div className="mb-4 flex flex-wrap gap-1" role="tablist" aria-label="strategy type">
+          <legend className="label px-1">Position</legend>
+          <div className="mb-4 flex flex-wrap gap-1" role="tablist" aria-label="Strategy type">
             {(["single", "basket", "pair", "funding"] as const).map((t) => {
               const locked = t !== "single" && !tierOk;
               return (
-                <button key={t} role="tab" aria-selected={type === t} disabled={locked} title={locked ? "desk tier ($BIAS holders) unlocks this" : undefined} className={`btn ${type === t ? "border-long/50 text-long" : "text-muted"}`} onClick={() => setType(t)}>
-                  {t === "funding" ? "funding farm" : t}
+                <button key={t} role="tab" aria-selected={type === t} disabled={locked} title={locked ? "Requires the desk tier ($BIAS holders)" : undefined} className={`btn ${type === t ? "border-long/50 text-long" : "text-muted"}`} onClick={() => setType(t)}>
+                  {t === "funding" ? "Funding farm" : t[0]!.toUpperCase() + t.slice(1)}
                   {locked && " 🔒"}
                 </button>
               );
@@ -261,7 +261,7 @@ export function LaunchForm({ allowlist, launchFeeSol, maxDevBuy, vaultRentSol, l
 
           {type === "single" && (
             <div className="grid gap-3 sm:grid-cols-3">
-              <AssetSelect label="asset" value={asset} onChange={setAsset} list={allowlist} />
+              <AssetSelect label="Asset" value={asset} onChange={setAsset} list={allowlist} />
               <SideToggle side={side} setSide={setSide} />
               <LevSlider lev={lev} setLev={setLev} cap={CAPS.single} />
             </div>
@@ -271,19 +271,19 @@ export function LaunchForm({ allowlist, launchFeeSol, maxDevBuy, vaultRentSol, l
               {legs.map((l, i) => (
                 <div key={i} className="grid grid-cols-[1fr_120px_auto] items-end gap-2">
                   <AssetSelect label={`asset ${i + 1}`} value={l.asset} onChange={(v) => setLegs(legs.map((x, j) => (j === i ? { ...x, asset: v } : x)))} list={allowlist} />
-                  <Field label="weight %">
+                  <Field label="Weight %">
                     <input className="input num" type="number" min={5} max={95} value={l.weight} onChange={(e) => setLegs(legs.map((x, j) => (j === i ? { ...x, weight: Number(e.target.value) } : x)))} />
                   </Field>
-                  <button className="btn" disabled={legs.length <= 2} onClick={() => setLegs(legs.filter((_, j) => j !== i))} aria-label="remove asset">
+                  <button className="btn" disabled={legs.length <= 2} onClick={() => setLegs(legs.filter((_, j) => j !== i))} aria-label="Remove asset">
                     ✕
                   </button>
                 </div>
               ))}
               <div className="flex items-center gap-3">
                 <button className="btn" disabled={legs.length >= 3} onClick={() => setLegs([...legs, { asset: "ETH", weight: 0 }])}>
-                  + asset
+                  Add asset
                 </button>
-                <span className={`num text-xs ${weightSum === 100 ? "text-muted" : "text-short"}`}>weights: {weightSum}%</span>
+                <span className={`num text-xs ${weightSum === 100 ? "text-muted" : "text-short"}`}>Weights: {weightSum}%</span>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
                 <SideToggle side={side} setSide={setSide} />
@@ -293,20 +293,20 @@ export function LaunchForm({ allowlist, launchFeeSol, maxDevBuy, vaultRentSol, l
           )}
           {type === "pair" && (
             <div className="grid gap-3 sm:grid-cols-3">
-              <AssetSelect label="long" value={pairA} onChange={setPairA} list={allowlist} />
-              <AssetSelect label="short" value={pairB} onChange={setPairB} list={allowlist} />
+              <AssetSelect label="Long" value={pairA} onChange={setPairA} list={allowlist} />
+              <AssetSelect label="Short" value={pairB} onChange={setPairB} list={allowlist} />
               <LevSlider lev={lev} setLev={setLev} cap={CAPS.pair} />
             </div>
           )}
           {type === "funding" && (
             <div className="grid gap-3 sm:grid-cols-2">
-              <AssetSelect label="asset (needs HL spot)" value={asset} onChange={setAsset} list={FUNDING} />
+              <AssetSelect label="Asset (needs HL spot)" value={asset} onChange={setAsset} list={FUNDING} />
               <p className="text-xs text-muted">short perp + spot long of the same size at 1×. collects funding. goes flat after two negative 8h windows, back on after two positive.</p>
             </div>
           )}
 
           <div className="mt-5 rounded-lg border border-line bg-bg p-4">
-            <div className="mb-2 text-xs uppercase tracking-widest text-muted">guardrails preview</div>
+            <div className="label mb-2">Risk preview</div>
             {preview?.errors.length ? (
               <ul className="space-y-1 text-sm text-short">
                 {preview.errors.map((e) => (
@@ -321,10 +321,10 @@ export function LaunchForm({ allowlist, launchFeeSol, maxDevBuy, vaultRentSol, l
                       {l.asset} {l.side} {l.leverage}×
                     </span>
                     <span className="text-muted"> · {l.text}</span>
-                    {l.reduced && <span className="text-accent"> · leverage reduced from {l.requestedLeverage}× so the stop fires well before liquidation</span>}
+                    {l.reduced && <span className="text-accent"> · leverage reduced from {l.requestedLeverage}× so the stop sits well before liquidation</span>}
                   </li>
                 ))}
-                {preview?.minCollateralUsd != null && <li className="text-xs text-muted">opens once ≈ ${preview.minCollateralUsd.toFixed(0)} of fees reach the position. stop-loss and take-profits are set on the exchange at entry.</li>}
+                {preview?.minCollateralUsd != null && <li className="text-xs text-muted">Opens once ≈ ${preview.minCollateralUsd.toFixed(0)} of fees reach the position. Stop-loss and take-profits are placed on the exchange at entry.</li>}
               </ul>
             )}
           </div>
@@ -333,17 +333,17 @@ export function LaunchForm({ allowlist, launchFeeSol, maxDevBuy, vaultRentSol, l
             <label className={`flex items-start gap-3 rounded-lg border border-line p-3 ${type === "funding" ? "opacity-40" : ""}`}>
               <input type="checkbox" className="mt-1 accent-[var(--long)]" checked={community} disabled={type === "funding"} onChange={(e) => setCommunity(e.target.checked)} />
               <span>
-                <span className="text-sm">🗳 community bias</span>
-                <span className="block text-xs text-muted">holders vote long / short / flat once a day. a vote is a signature, not a transaction.</span>
+                <span className="text-sm">Holder vote</span>
+                <span className="block text-xs text-muted">Holders vote long, short or flat once a day. Voting is a signature, not a transaction.</span>
               </span>
             </label>
-            <Field label="payout wallet (your 20% of fees)">
-              <input className="input num text-xs" value={payout} onChange={(e) => setPayout(e.target.value.trim())} placeholder="connect a wallet" />
+            <Field label="Payout wallet (your 20% of fees)">
+              <input className="input num text-xs" value={payout} onChange={(e) => setPayout(e.target.value.trim())} placeholder="Connect a wallet" />
             </Field>
           </div>
           {session.admin && (
             <label className="mt-3 flex items-center gap-2 text-sm text-accent">
-              <input type="checkbox" checked={flagship} onChange={(e) => setFlagship(e.target.checked)} /> flagship ($BIAS) market — launcher share goes to the treasury
+              <input type="checkbox" checked={flagship} onChange={(e) => setFlagship(e.target.checked)} /> Flagship ($BIAS) market: the launcher share goes to the treasury
             </label>
           )}
         </fieldset>
@@ -351,22 +351,22 @@ export function LaunchForm({ allowlist, launchFeeSol, maxDevBuy, vaultRentSol, l
 
       <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
         <div className="panel p-5">
-          <h2 className="font-display text-lg">summary</h2>
+          <h2 className="label">Cost</h2>
           <dl className="num mt-3 space-y-1.5 text-sm">
-            <Row k="network fees" v="≈ 0.0001 SOL" />
-            <Row k="pump.fun account rent" v="≈ 0.022 SOL" />
-            <Row k="bias launch fee" v={feeWaived ? "0 (holder)" : `${launchFeeSol} SOL`} />
-            <Row k="vault gas float" v={`${vaultRentSol} SOL`} />
-            <Row k="dev buy" v={`${devBuy || "0"} SOL`} />
+            <Row k="Network fees" v="≈ 0.0001 SOL" />
+            <Row k="Account rent (pump.fun)" v="≈ 0.022 SOL" />
+            <Row k="Launch fee" v={feeWaived ? "0 (holder)" : `${launchFeeSol} SOL`} />
+            <Row k="Vault fee reserve" v={`${vaultRentSol} SOL`} />
+            <Row k="Dev buy" v={`${devBuy || "0"} SOL`} />
             <div className="my-2 border-t border-line" />
             <Row
-              k="total ≈"
+              k="Total ≈"
               v={`${(0.0221 + (feeWaived ? 0 : Number(launchFeeSol)) + Number(vaultRentSol) + Number(devBuy || 0)).toFixed(4)} SOL`}
             />
           </dl>
         </div>
         <div className="panel p-5">
-          <h2 className="font-display text-lg">how fees split</h2>
+          <h2 className="label">Fee split</h2>
           <div className="mt-3 flex h-2 overflow-hidden rounded">
             <div className="bg-long" style={{ width: `${split.position / 100}%` }} />
             <div className="bg-flat" style={{ width: `${split.launcher / 100}%` }} />
@@ -374,29 +374,29 @@ export function LaunchForm({ allowlist, launchFeeSol, maxDevBuy, vaultRentSol, l
           </div>
           <ul className="num mt-3 space-y-1 text-sm">
             <li>
-              <span className="text-long">{split.position / 100}%</span> → the position
+              <span className="text-long">{split.position / 100}%</span> → position
             </li>
             <li>
-              <span className="text-flat">{split.launcher / 100}%</span> → you (payout wallet)
+              <span className="text-flat">{split.launcher / 100}%</span> → launcher (you)
             </li>
             <li>
-              <span className="text-accent">{split.platform / 100}%</span> → buys back &amp; burns $BIAS
+              <span className="text-accent">{split.platform / 100}%</span> → $BIAS buyback and burn
             </li>
           </ul>
         </div>
-        {!launchesEnabled && <p className="panel p-3 text-sm text-accent">launches are paused right now.</p>}
+        {!launchesEnabled && <p className="panel p-3 text-sm text-accent">Launches are paused.</p>}
         {signedIn ? (
           <button className="btn btn-long w-full py-3 text-base" disabled={!canLaunch} onClick={() => void launch()}>
-            {step === "preparing" ? "preparing…" : step === "signing" ? "approve in wallet…" : step === "confirming" ? "confirming on solana…" : "launch"}
+            {step === "preparing" ? "Preparing…" : step === "signing" ? "Approve in wallet…" : step === "confirming" ? "Confirming…" : "Launch"}
           </button>
         ) : (
-          <div className="panel flex flex-col items-center gap-2 p-4 text-center text-sm text-muted">
-            connect and sign in to launch
+          <div className="panel flex flex-col items-center gap-3 p-4 text-center text-sm text-muted">
+            Connect a wallet and sign in to launch.
             <WalletButton />
           </div>
         )}
         {error && <p className="text-sm text-short">{error}</p>}
-        <p className="text-xs text-muted">positions are leveraged and can lose everything. vaults are operated by the platform. memecoins are extremely risky. nothing here is financial advice.</p>
+        
       </aside>
     </div>
   );
@@ -450,13 +450,13 @@ function AssetSelect({ label, value, onChange, list }: { label: string; value: s
 
 function SideToggle({ side, setSide }: { side: "long" | "short"; setSide: (s: "long" | "short") => void }) {
   return (
-    <Field label="side">
+    <Field label="Side">
       <div className="grid grid-cols-2 gap-1">
         <button type="button" className={`btn ${side === "long" ? "border-long text-long" : "text-muted"}`} onClick={() => setSide("long")} aria-pressed={side === "long"}>
-          long
+          Long
         </button>
         <button type="button" className={`btn ${side === "short" ? "border-short text-short" : "text-muted"}`} onClick={() => setSide("short")} aria-pressed={side === "short"}>
-          short
+          Short
         </button>
       </div>
     </Field>
@@ -465,8 +465,8 @@ function SideToggle({ side, setSide }: { side: "long" | "short"; setSide: (s: "l
 
 function LevSlider({ lev, setLev, cap }: { lev: number; setLev: (n: number) => void; cap: number }) {
   return (
-    <Field label="leverage" hint={`${lev}× (max ${cap}×)`}>
-      <input type="range" min={1} max={cap} step={1} value={lev} onChange={(e) => setLev(Number(e.target.value))} className="w-full accent-[var(--long)]" aria-label="leverage" />
+    <Field label="Leverage" hint={`${lev}× (max ${cap}×)`}>
+      <input type="range" min={1} max={cap} step={1} value={lev} onChange={(e) => setLev(Number(e.target.value))} className="w-full accent-[var(--long)]" aria-label="Leverage" />
     </Field>
   );
 }

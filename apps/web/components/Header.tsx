@@ -6,13 +6,13 @@ import { useEffect, useRef, useState } from "react";
 import { WalletButton } from "./WalletButton";
 
 const NAV = [
-  ["/", "markets"],
-  ["/explore", "explore"],
-  ["/activity", "activity"],
-  ["/proof", "proof"],
-  ["/graveyard", "graveyard"],
+  ["/", "Markets"],
+  ["/explore", "Explore"],
+  ["/activity", "Activity"],
+  ["/proof", "Proof"],
+  ["/graveyard", "Graveyard"],
   ["/bias", "$BIAS"],
-  ["/docs", "docs"],
+  ["/docs", "Docs"],
 ] as const;
 
 export function Header() {
@@ -40,50 +40,50 @@ export function Header() {
   useEffect(() => setOpen(false), [path]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-bg/85 backdrop-blur">
-      <div className="mx-auto flex h-14 max-w-7xl items-center gap-4 px-4">
+    <header className="sticky top-0 z-40 border-b border-line bg-bg">
+      <div className="mx-auto flex h-12 max-w-[1280px] items-center gap-6 px-4">
         <Link href="/" className="flex items-center gap-2" aria-label="bias home">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.svg" alt="" width={28} height={28} />
-          <span className="font-display text-lg font-bold tracking-tight">bias</span>
+          <img src="/logo.svg" alt="" width={22} height={22} />
+          <span className="text-[15px] font-semibold tracking-tight">bias</span>
         </Link>
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="main">
+        <nav className="hidden h-12 items-stretch lg:flex" aria-label="main">
           {NAV.map(([href, label]) => (
             <Link
               key={href}
               href={href}
-              className={`rounded-md px-2.5 py-1.5 text-sm ${path === href ? "bg-panel-2 text-text" : "text-muted hover:text-text"}`}
+              className={`flex items-center border-b-2 px-3 text-[13px] ${path === href ? "border-text text-text" : "border-transparent text-muted hover:text-text"}`}
             >
               {label}
             </Link>
           ))}
         </nav>
         <div className="ml-auto flex items-center gap-2">
-          <button className="btn hidden text-muted sm:inline-flex" onClick={() => setSearch(true)} aria-label="search markets">
-            search <kbd className="chip">ctrl k</kbd>
+          <button className="hidden h-8 w-56 items-center justify-between rounded-[3px] border border-line px-2.5 text-[13px] text-muted hover:text-text md:flex" onClick={() => setSearch(true)} aria-label="search markets">
+            Search markets <span className="num text-[11px]">⌘K</span>
           </button>
-          <Link href="/launch" className="btn hidden border-long/40 text-long sm:inline-flex">
-            launch market
+          <Link href="/launch" className="btn hidden sm:inline-flex">
+            Launch
           </Link>
           <WalletButton compact />
-          <button className="btn lg:hidden" onClick={() => setOpen((v) => !v)} aria-label="menu" aria-expanded={open}>
-            ☰
+          <button className="btn px-2.5 lg:hidden" onClick={() => setOpen((v) => !v)} aria-label="menu" aria-expanded={open}>
+            Menu
           </button>
         </div>
       </div>
       {open && (
-        <nav className="border-t border-line px-4 py-2 lg:hidden" aria-label="mobile">
-          {[...NAV, ["/launch", "launch market"] as const].map(([href, label]) => (
-            <Link key={href} href={href} className="block py-2 text-sm text-muted hover:text-text">
+        <nav className="border-t border-line px-4 py-1 lg:hidden" aria-label="mobile">
+          {[...NAV, ["/launch", "Launch a market"] as const].map(([href, label]) => (
+            <Link key={href} href={href} className="block border-b border-line py-2.5 text-sm text-muted last:border-0 hover:text-text">
               {label}
             </Link>
           ))}
         </nav>
       )}
       {search && (
-        <div className="fixed inset-0 z-50 bg-black/70 p-4 pt-24" onClick={() => setSearch(false)} role="dialog" aria-modal="true" aria-label="search">
+        <div className="fixed inset-0 z-50 bg-black/60 p-4 pt-20" onClick={() => setSearch(false)} role="dialog" aria-modal="true" aria-label="search">
           <form
-            className="panel mx-auto max-w-xl p-2"
+            className="panel mx-auto max-w-lg p-1"
             onClick={(e) => e.stopPropagation()}
             onSubmit={(e) => {
               e.preventDefault();
@@ -91,7 +91,7 @@ export function Header() {
               router.push(`/explore?q=${encodeURIComponent(q)}`);
             }}
           >
-            <input ref={input} className="input num text-base" placeholder="ticker, name or contract address" value={q} onChange={(e) => setQ(e.target.value)} aria-label="search query" />
+            <input ref={input} className="input num border-0" placeholder="Ticker, name or contract address" value={q} onChange={(e) => setQ(e.target.value)} aria-label="search query" />
           </form>
         </div>
       )}

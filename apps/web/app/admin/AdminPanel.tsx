@@ -42,10 +42,10 @@ export function AdminPanel() {
   const e = s.effective;
   return (
     <div className="space-y-6">
-      <h1 className="font-display text-3xl font-bold">admin</h1>
+      <h1 className="text-xl font-semibold tracking-tight">Admin</h1>
       {err && <p className="text-sm text-short">{err}</p>}
       <section className="panel p-4">
-        <h2 className="font-display mb-3 text-lg">kill switches</h2>
+        <h2 className="mb-3 text-sm font-semibold">Kill switches</h2>
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-sm text-muted">launches:</span>
           <button className={`btn ${e.LAUNCHES_ENABLED ? "text-long" : "text-short"}`} onClick={() => void act({ action: "set", key: "LAUNCHES_ENABLED", value: String(!e.LAUNCHES_ENABLED) })}>
@@ -81,7 +81,7 @@ export function AdminPanel() {
         ))}
       </section>
       <section className="panel p-4">
-        <h2 className="font-display mb-3 text-lg">market controls</h2>
+        <h2 className="mb-3 text-sm font-semibold">Market controls</h2>
         <div className="flex flex-wrap gap-2">
           <input className="input num w-80 text-xs" placeholder="market id or mint" value={market} onChange={(ev) => setMarket(ev.target.value.trim())} />
           <button className="btn" onClick={() => void act({ action: "pause", market, value: true })}>close-only</button>
@@ -92,7 +92,7 @@ export function AdminPanel() {
         </div>
       </section>
       <section className="panel p-4">
-        <h2 className="font-display mb-3 text-lg">alerts</h2>
+        <h2 className="mb-3 text-sm font-semibold">Alerts</h2>
         <ul className="space-y-1 text-sm">
           {s.alerts.length === 0 && <li className="text-muted">none.</li>}
           {s.alerts.map((a) => (
@@ -109,7 +109,7 @@ export function AdminPanel() {
         </ul>
       </section>
       <section className="panel p-4">
-        <h2 className="font-display mb-3 text-lg">jobs</h2>
+        <h2 className="mb-3 text-sm font-semibold">Jobs</h2>
         <table className="num w-full text-xs">
           <tbody>
             {s.jobs.map((j) => (
@@ -125,7 +125,7 @@ export function AdminPanel() {
         </table>
       </section>
       <section className="panel p-4">
-        <h2 className="font-display mb-3 text-lg">audit log</h2>
+        <h2 className="mb-3 text-sm font-semibold">Audit log</h2>
         <ul className="num space-y-1 text-xs text-muted">
           {s.log.map((l) => (
             <li key={l.id}>

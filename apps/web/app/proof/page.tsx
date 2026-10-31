@@ -5,7 +5,7 @@ import { proofRows } from "@/lib/proof";
 import { hlExplorerAddr, solscanAccount, solscanToken } from "@/lib/links";
 import { Empty } from "@/components/ui";
 
-export const metadata: Metadata = { title: "proof", description: "every vault, every hyperliquid account, every claim, trade, buyback and burn — reconciled." };
+export const metadata: Metadata = { title: "Proof", description: "Every vault, Hyperliquid account, claim, trade, buyback and burn, reconciled." };
 export const dynamic = "force-dynamic";
 
 const sol = (s?: string) => (Number(s ?? 0) / 1e9).toFixed(4);
@@ -18,13 +18,13 @@ export default async function Proof() {
   const sum = (k: string) => rows.reduce((a, r) => a + Number(r.sums[k] ?? 0), 0);
   return (
     <>
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-3 border-b border-line pb-4">
         <div>
-          <h1 className="font-display text-3xl font-bold">don&apos;t trust the dashboard.</h1>
-          <p className="text-sm text-muted">every vault on solana, every account on hyperliquid, every claim, trade, buyback and burn — linked and reconciled.</p>
+          <h1 className="text-xl font-semibold tracking-tight">Proof</h1>
+          <p className="text-sm text-muted">Every vault on Solana and account on Hyperliquid, with every claim, trade, buyback and burn linked and reconciled against the ledger.</p>
         </div>
         <a className="btn" href="/api/proof" download>
-          export JSON
+          Export JSON
         </a>
       </div>
 
@@ -47,12 +47,12 @@ export default async function Proof() {
         </div>
         <div className={`panel p-4 ${red ? "border-short/60" : "border-long/40"}`}>
           <div className="text-xs text-muted">reconciliation</div>
-          <div className={`num text-xl ${red ? "text-short" : "text-long"}`}>{red ? `${red} market(s) off by > 1%` : "✓ all within 1%"}</div>
+          <div className={`num text-xl ${red ? "text-short" : "text-long"}`}>{red ? `${red} market(s) off by > 1%` : "All within 1%"}</div>
         </div>
       </section>
 
       <section className="panel mb-6 p-5 text-sm leading-relaxed text-muted" aria-label="custody">
-        <h2 className="font-display mb-2 text-lg text-text">who holds the keys</h2>
+        <h2 className="mb-2 text-sm font-semibold text-text">Custody</h2>
         <ul className="list-disc space-y-1 pl-5">
           <li>each market has its own solana vault and its own hyperliquid account, derived from a master seed that lives only in github actions secrets. margin is isolated: one market&apos;s loss can&apos;t touch another.</li>
           <li>trading uses a separate hyperliquid <span className="text-text">agent</span> key (second seed, separate workflow). an agent can trade. it cannot withdraw.</li>
@@ -62,7 +62,7 @@ export default async function Proof() {
       </section>
 
       {rows.length === 0 ? (
-        <Empty title="nothing to prove yet.">every market will show up here with its addresses and a line-by-line reconciliation.</Empty>
+        <Empty title="No markets yet.">Each market appears here with its addresses and a line-by-line reconciliation.</Empty>
       ) : (
         <div className="space-y-3">
           {rows.map(({ market: m, recon, sums }) => {
@@ -74,7 +74,7 @@ export default async function Proof() {
                     ${m.ticker}
                   </Link>
                   <span className="text-xs text-muted">{m.strategyLabel}</span>
-                  <span className={`chip ml-auto ${bad ? "border-short/60 text-short" : "border-long/40 text-long"}`}>{bad ? "✗ mismatch > 1%" : recon.length ? "✓ reconciled" : "awaiting first snapshot"}</span>
+                  <span className={`tag ml-auto ${bad ? "border-short/60 text-short" : "border-long/40 text-long"}`}>{bad ? "Mismatch > 1%" : recon.length ? "Reconciled" : "No snapshot yet"}</span>
                 </summary>
                 <div className="num mt-4 grid gap-4 text-xs md:grid-cols-2">
                   <dl className="space-y-1">
@@ -108,7 +108,7 @@ export default async function Proof() {
                     <tbody>
                       {recon.map((l) => (
                         <tr key={l.key} className={l.ok ? "" : "text-short"}>
-                          <td className="py-1">{l.ok ? "✓" : "✗"} {l.label}</td>
+                          <td className="py-1">{l.ok ? "ok" : "off"} · {l.label}</td>
                           <td>{Number(l.expected).toFixed(4)}</td>
                           <td>{Number(l.actual).toFixed(4)}</td>
                           <td>{l.diffPct.toFixed(2)}%</td>

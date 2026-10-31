@@ -8,7 +8,7 @@ export function RespectsButton({ mint, count }: { mint: string; count: number })
   const [n, setN] = useState(count);
   const [msg, setMsg] = useState<string | null>(null);
   async function pay() {
-    if (!session.wallet && !(await session.signIn())) return setMsg("connect a wallet to pay respects");
+    if (!session.wallet && !(await session.signIn())) return setMsg("Connect a wallet first.");
     const r = await fetch("/api/respects", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ mint }) });
     const j = await r.json();
     if (r.ok) setN(j.respects);
@@ -16,8 +16,8 @@ export function RespectsButton({ mint, count }: { mint: string; count: number })
   }
   return (
     <>
-      <button className="btn" onClick={() => void pay()}>
-        🫡 press F · <span className="num">{n}</span>
+      <button className="btn px-2 py-0.5 text-xs" onClick={() => void pay()}>
+        Pay respects <span className="num text-muted">{n}</span>
       </button>
       {msg && <p className="mt-1 text-xs text-muted">{msg}</p>}
     </>

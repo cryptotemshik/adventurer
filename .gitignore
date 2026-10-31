@@ -13,3 +13,4 @@ test-results
 playwright-report
 .data
 apps/web/test-results
+.bias-secrets.txt

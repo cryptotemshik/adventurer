@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { getConfig, siteUrl } from "@/lib/config";
 import { perpAssets } from "@/lib/hl-public";
 import { LaunchForm } from "./LaunchForm";
+import { PageTitle } from "@/components/ui";
 
-export const metadata: Metadata = { title: "launch a market", description: "launch a coin on pump.fun with a leveraged bias on hyperliquid. stops included." };
+export const metadata: Metadata = { title: "Launch a market", description: "Launch a coin on pump.fun with a leveraged position on Hyperliquid." };
 export const dynamic = "force-dynamic";
 
 export default async function LaunchPage() {
@@ -15,8 +16,7 @@ export default async function LaunchPage() {
   const allowlist = cfg.allowlist.filter((a) => !Object.keys(assets).length || assets[a]);
   return (
     <>
-      <h1 className="font-display mb-1 text-3xl font-bold">launch a market</h1>
-      <p className="mb-6 text-sm text-muted">a coin on pump.fun + a position on hyperliquid. max 5×, stop-loss set at entry, take-profits pay for buybacks.</p>
+      <PageTitle title="Launch a market" sub="A coin on pump.fun and a position on Hyperliquid. Max 5×, stop-loss placed at entry, take-profits fund buybacks." />
       <LaunchForm
         allowlist={allowlist}
         launchFeeSol={cfg.TREASURY_PUBKEY ? cfg.LAUNCH_FEE_SOL : "0"}

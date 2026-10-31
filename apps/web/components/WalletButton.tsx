@@ -23,23 +23,23 @@ export function WalletButton({ compact = false }: { compact?: boolean }) {
       <div className="relative">
         {signedIn ? (
           <button className="btn num" onClick={() => setMenu((v) => !v)} aria-haspopup="menu" aria-expanded={menu}>
-            <span className="live-dot" aria-hidden />
+            
             {shortAddr(publicKey.toBase58())}
-            {session.tier !== "none" && <span className="chip text-accent border-accent/40">{session.tier}</span>}
+            {session.tier !== "none" && <span className="tag text-accent border-accent/40">{session.tier}</span>}
           </button>
         ) : (
           <button className="btn btn-long" onClick={() => void session.signIn()} disabled={session.signing}>
-            {session.signing ? "check wallet…" : compact ? "sign in" : "sign in with solana"}
+            {session.signing ? "Check wallet…" : compact ? "Sign in" : "Sign in with Solana"}
           </button>
         )}
         {menu && (
           <div role="menu" className="panel absolute right-0 z-50 mt-2 w-56 p-2 text-sm shadow-2xl">
             <div className="px-2 py-1 text-muted">
-              tier: <span className="text-text">{session.tier}</span>
+              Tier: <span className="text-text">{session.tier}</span>
             </div>
             {session.admin && (
               <a role="menuitem" href="/admin" className="block rounded px-2 py-1.5 hover:bg-panel-2">
-                admin
+                Admin
               </a>
             )}
             <button
@@ -51,7 +51,7 @@ export function WalletButton({ compact = false }: { compact?: boolean }) {
                 void disconnect();
               }}
             >
-              disconnect
+              Disconnect
             </button>
           </div>
         )}
@@ -64,20 +64,20 @@ export function WalletButton({ compact = false }: { compact?: boolean }) {
   return (
     <>
       <button className="btn btn-long" onClick={() => setOpen(true)} disabled={connecting}>
-        {connecting ? "connecting…" : compact ? "connect" : "connect wallet"}
+        {connecting ? "Connecting…" : compact ? "Connect" : "Connect wallet"}
       </button>
       {open && (
         <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4" onClick={() => setOpen(false)} role="dialog" aria-modal="true" aria-label="connect a wallet">
           <div className="panel w-full max-w-sm p-5" onClick={(e) => e.stopPropagation()}>
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="font-display text-lg">connect a wallet</h2>
+              <h2 className="text-sm font-semibold">Connect a wallet</h2>
               <button className="text-muted hover:text-text" onClick={() => setOpen(false)} aria-label="close">
-                ✕
+                Close
               </button>
             </div>
             {installed.length === 0 ? (
               <p className="text-sm text-muted">
-                no solana wallet found. install{" "}
+                No Solana wallet found. Install{" "}
                 <a className="underline" href="https://phantom.com" target="_blank" rel="noreferrer">
                   phantom
                 </a>
@@ -110,7 +110,7 @@ export function WalletButton({ compact = false }: { compact?: boolean }) {
                 ))}
               </ul>
             )}
-            <p className="mt-4 text-xs text-muted">signing in is a message signature. it never moves funds.</p>
+            <p className="mt-4 text-xs text-muted">Signing in is a message signature and never moves funds.</p>
           </div>
         </div>
       )}

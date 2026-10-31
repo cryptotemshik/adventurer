@@ -242,8 +242,11 @@ export async function setPoolAgent(db: Db, idx: number, hlAgent: string) {
 }
 
 export async function addPoolAddresses(db: Db, rows: { idx: number; solVault: string; hlAccount: string; hlAgent: string }[]) {
-  if (!rows.length) return;
-  await db.insert(t.addressPool).values(rows.map((r) => ({ ...r, createdAt: now() }))).onConflictDoNothing();
+  // Durable Object SQLite allows at most 100 bound parameters per statement → 6 columns × 15 rows
+  for (let i = 0; i < rows.length; i += 15) {
+    const chunk = rows.slice(i, i + 15);
+    await db.insert(t.addressPool).values(chunk.map((r) => ({ ...r, createdAt: now() }))).onConflictDoNothing();
+  }
 }
 
 // ---------------- auth ----------------

@@ -54,16 +54,16 @@ export function MarketDetail({ initial, siteUrl }: { initial: Detail; siteUrl: s
 
   return (
     <div className="space-y-6">
-      <header className="panel flex flex-col gap-4 p-5 md:flex-row md:items-center">
-        <CoinImage src={m.image} ticker={m.ticker} size={72} />
+      <header className="flex flex-col gap-4 border-b border-line pb-5 md:flex-row md:items-center">
+        <CoinImage src={m.image} ticker={m.ticker} size={52} />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h1 className="font-display text-3xl font-bold">${m.ticker}</h1>
+            <h1 className="text-xl font-semibold tracking-tight">${m.ticker}</h1>
             <span className="text-muted">{m.name}</span>
             <StatusBadge status={m.status} />
-            {m.flagship && <span className="chip border-accent/50 text-accent">flagship</span>}
-            {m.community && <span className="chip">🗳 community</span>}
-            {m.paused && <span className="chip text-accent">close-only</span>}
+            {m.flagship && <span className="tag border-accent/50 text-accent">flagship</span>}
+            {m.community && <span className="tag">community</span>}
+            {m.paused && <span className="tag text-accent">close-only</span>}
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <StrategyBadge label={m.strategyLabel} direction={m.direction} />
@@ -73,7 +73,7 @@ export function MarketDetail({ initial, siteUrl }: { initial: Detail; siteUrl: s
                 {shortAddr(m.mint ?? "", 6)} ⧉
               </button>
             </span>
-            <span className="num text-xs text-muted">launcher {shortAddr(m.launcher)}</span>
+            <span className="num text-xs text-muted">Launcher {shortAddr(m.launcher)}</span>
             <span className="num text-xs text-muted">{new Date(m.createdAt).toISOString().slice(0, 10)}</span>
           </div>
           {m.description && <p className="mt-2 line-clamp-2 text-sm text-muted">{m.description}</p>}
@@ -83,46 +83,46 @@ export function MarketDetail({ initial, siteUrl }: { initial: Detail; siteUrl: s
           <div className="mt-3 flex flex-wrap gap-2">
             {m.mint && (
               <a className="btn btn-long" href={pumpFun(m.mint)} target="_blank" rel="noreferrer">
-                buy on pump.fun
+                Buy on pump.fun
               </a>
             )}
             <a className="btn" href={share} target="_blank" rel="noreferrer">
-              share
+              Share
             </a>
             <Link className="btn" href={`/proof#${m.id}`}>
-              proof
+              Proof
             </Link>
           </div>
         </div>
       </header>
 
       {m.status === "cooldown" && m.cooldownUntil && (
-        <p className="panel border-flat/40 p-3 text-sm text-flat">stop-loss hit. cooling down until {new Date(m.cooldownUntil).toISOString().slice(0, 16).replace("T", " ")} utc, then re-entering with fresh fees.</p>
+        <p className="border-l-2 border-flat pl-3 text-sm text-muted">Stop-loss hit. Cooling down until {new Date(m.cooldownUntil).toISOString().slice(0, 16).replace("T", " ")} UTC, then re-entering with new fees.</p>
       )}
-      {m.status === "waiting_for_fees" && <p className="panel p-3 text-sm text-accent">waiting for fees: the position opens once enough creator fees reach hyperliquid.</p>}
+      {m.status === "waiting_for_fees" && <p className="border-l-2 border-accent pl-3 text-sm text-muted">Waiting for fees. The position opens once enough creator fees reach Hyperliquid.</p>}
 
-      <section className="grid grid-cols-2 gap-3 md:grid-cols-4" aria-label="position summary">
-        <Stat label="equity" value={fmtUsd(m.equityUsd)} sub={`notional ${fmtUsd(m.notionalUsd)}`} />
+      <section className="panel grid grid-cols-2 md:grid-cols-4 md:divide-x md:divide-line" aria-label="position summary">
+        <Stat label="Equity" value={fmtUsd(m.equityUsd)} sub={`notional ${fmtUsd(m.notionalUsd)}`} />
         <Stat label="uPnL" value={<Pnl v={m.upnlUsd} />} />
-        <Stat label="lifetime PnL" value={<Pnl v={m.lifetimePnlUsd} pct={m.lifetimePnlPct} />} />
-        <Stat label="burned 🔥" value={`${m.burnedPct.toFixed(3)}%`} sub={`${m.boughtBackSol.toFixed(3)} SOL bought back`} tone="accent" />
+        <Stat label="Lifetime PnL" value={<Pnl v={m.lifetimePnlUsd} pct={m.lifetimePnlPct} />} />
+        <Stat label="Burned" value={`${m.burnedPct.toFixed(3)}%`} sub={`${m.boughtBackSol.toFixed(3)} SOL bought back`} />
       </section>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
         <div className="space-y-6">
           <section className="panel p-4" aria-label="position">
             <div className="mb-3 flex items-center justify-between">
-              <h2 className="font-display text-lg">position</h2>
+              <h2 className="text-sm font-semibold">Position</h2>
               <span className="num text-xs text-muted">hyperliquid {d.network}</span>
             </div>
             {legs.length === 0 ? (
-              <p className="py-4 text-sm text-muted">no open position.</p>
+              <p className="py-4 text-sm text-muted">No open position.</p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="num w-full min-w-[640px] text-sm">
                   <thead className="text-left text-xs text-muted">
                     <tr>
-                      {["asset", "side", "size", "notional", "entry", "mark", "liq", "lev", "margin", "uPnL"].map((h) => (
+                      {["Asset", "Side", "Size", "Notional", "Entry", "Mark", "Liq", "Lev", "Margin", "uPnL"].map((h) => (
                         <th key={h} className="pb-2 font-normal">
                           {h}
                         </th>
@@ -160,12 +160,12 @@ export function MarketDetail({ initial, siteUrl }: { initial: Detail; siteUrl: s
           </section>
 
           <section className="panel p-4" aria-label="equity curve">
-            <h2 className="font-display mb-2 text-lg">equity</h2>
-            {d.equity.length ? <EquityChart points={d.equity} /> : <p className="py-6 text-sm text-muted">day 0. the curve starts with the first fees.</p>}
+            <h2 className="mb-2 text-sm font-semibold">equity</h2>
+            {d.equity.length ? <EquityChart points={d.equity} /> : <p className="py-6 text-sm text-muted">No snapshots yet.</p>}
           </section>
 
           <section className="panel p-4" aria-label="events">
-            <h2 className="font-display mb-2 text-lg">tape</h2>
+            <h2 className="mb-2 text-sm font-semibold">Events</h2>
             <EventFeed events={d.events} network={d.network} />
           </section>
         </div>
@@ -173,35 +173,35 @@ export function MarketDetail({ initial, siteUrl }: { initial: Detail; siteUrl: s
         <aside className="space-y-6">
           {m.community && <VotePanel market={m} vote={d.vote} rounds={d.rounds} />}
           <section className="panel p-4" aria-label="life of the market">
-            <h2 className="font-display mb-3 text-lg">life of the market</h2>
+            <h2 className="mb-3 text-sm font-semibold">Fees and buybacks</h2>
             <dl className="num space-y-1.5 text-sm">
-              <Row k="fees claimed" v={`${m.feesClaimedSol.toFixed(4)} SOL`} />
+              <Row k="Fees claimed" v={`${m.feesClaimedSol.toFixed(4)} SOL`} />
               <Row k="→ launcher (20%)" v={`${m.feesLauncherSol.toFixed(4)} SOL`} />
               <Row k="→ $BIAS burn (10%)" v={`${m.feesPlatformSol.toFixed(4)} SOL`} />
               <Row k="→ position (70%)" v={`${m.feesPositionSol.toFixed(4)} SOL`} />
-              <Row k="in pipeline / in transit" v={`${m.pipelineSol.toFixed(3)} / ${m.inTransitSol.toFixed(3)} SOL`} />
-              <Row k="deployed collateral" v={fmtUsd(m.depositedUsd)} />
-              <Row k="realized PnL" v={fmtUsd(m.realizedPnlUsd)} />
-              <Row k="profit taken" v={fmtUsd(m.profitTakenUsd)} />
-              <Row k="bought back" v={`${m.boughtBackSol.toFixed(4)} SOL`} />
-              <Row k="tokens burned" v={`${fmtTokens(m.burnedTokens)} (${m.burnedPct.toFixed(3)}%)`} />
+              <Row k="In pipeline / in transit" v={`${m.pipelineSol.toFixed(3)} / ${m.inTransitSol.toFixed(3)} SOL`} />
+              <Row k="Deployed collateral" v={fmtUsd(m.depositedUsd)} />
+              <Row k="Realized PnL" v={fmtUsd(m.realizedPnlUsd)} />
+              <Row k="Profit taken" v={fmtUsd(m.profitTakenUsd)} />
+              <Row k="Bought back" v={`${m.boughtBackSol.toFixed(4)} SOL`} />
+              <Row k="Tokens burned" v={`${fmtTokens(m.burnedTokens)} (${m.burnedPct.toFixed(3)}%)`} />
             </dl>
           </section>
           <section className="panel p-4" aria-label="addresses">
-            <h2 className="font-display mb-3 text-lg">addresses</h2>
+            <h2 className="mb-3 text-sm font-semibold">Addresses</h2>
             <dl className="num space-y-1.5 text-xs">
-              {m.mint && <LinkRow k="mint" v={m.mint} href={solscanToken(m.mint)} />}
-              <LinkRow k="solana vault" v={m.solVault} href={solscanAccount(m.solVault)} />
-              <LinkRow k="hl account" v={m.hlAccount} href={hlExplorerAddr(m.hlAccount, d.network)} />
-              <LinkRow k="hl agent (trade-only)" v={m.hlAgent} href={hlExplorerAddr(m.hlAgent, d.network)} />
+              {m.mint && <LinkRow k="Mint" v={m.mint} href={solscanToken(m.mint)} />}
+              <LinkRow k="Solana vault" v={m.solVault} href={solscanAccount(m.solVault)} />
+              <LinkRow k="HL account" v={m.hlAccount} href={hlExplorerAddr(m.hlAccount, d.network)} />
+              <LinkRow k="HL agent (trade only)" v={m.hlAgent} href={hlExplorerAddr(m.hlAgent, d.network)} />
             </dl>
           </section>
           <section className="panel p-4" aria-label="coin market">
-            <h2 className="font-display mb-2 text-lg">coin</h2>
+            <h2 className="mb-2 text-sm font-semibold">Coin</h2>
             <dl className="num space-y-1.5 text-sm">
-              <Row k="price" v={m.priceUsd ? `$${m.priceUsd.toPrecision(4)}` : "—"} />
-              <Row k="mcap" v={fmtUsd(m.mcapUsd, 0)} />
-              <Row k="bonding curve" v={m.graduated ? "graduated" : `${m.bondingProgress.toFixed(1)}%`} />
+              <Row k="Price" v={m.priceUsd ? `$${m.priceUsd.toPrecision(4)}` : "—"} />
+              <Row k="Mcap" v={fmtUsd(m.mcapUsd, 0)} />
+              <Row k="Bonding curve" v={m.graduated ? "graduated" : `${m.bondingProgress.toFixed(1)}%`} />
             </dl>
             {!m.graduated && (
               <div className="mt-2 h-1.5 overflow-hidden rounded bg-line">

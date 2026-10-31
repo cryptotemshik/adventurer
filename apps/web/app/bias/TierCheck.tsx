@@ -18,11 +18,11 @@ export function TierCheck() {
   }
   return (
     <section className="panel p-4">
-      <h2 className="font-display text-lg">check my tier</h2>
+      <h2 className="text-sm font-semibold">Check my tier</h2>
       <div className="mt-2 flex gap-2">
         <input className="input num text-xs" placeholder={publicKey?.toBase58() ?? "wallet address"} value={addr} onChange={(e) => setAddr(e.target.value.trim())} aria-label="wallet address" />
         <button className="btn" onClick={() => void check()}>
-          check
+          Check
         </button>
       </div>
       {err && <p className="mt-2 text-xs text-short">{err}</p>}

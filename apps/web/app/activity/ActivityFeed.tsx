@@ -5,12 +5,12 @@ import { EventFeed, type FeedEvent } from "@/components/EventFeed";
 import { usePolling } from "@/components/usePolling";
 
 const FILTERS = [
-  ["", "all"],
-  ["tp_hit,buyback,burn", "🔥 big ones"],
-  ["launch", "launches"],
-  ["claim,split,payout,bridge_in,bridge_arrived", "fees"],
-  ["open,add,reduce,close,deleverage,flip,flat", "trades"],
-  ["sl_hit,cooldown,stopped,dead", "stops"],
+  ["", "All"],
+  ["tp_hit,buyback,burn", "Profit & burns"],
+  ["launch", "Launches"],
+  ["claim,split,payout,bridge_in,bridge_arrived", "Fees"],
+  ["open,add,reduce,close,deleverage,flip,flat", "Trades"],
+  ["sl_hit,cooldown,stopped,dead", "Stops"],
 ] as const;
 
 export function ActivityFeed({ initial, network }: { initial: FeedEvent[]; network: string }) {
@@ -18,14 +18,14 @@ export function ActivityFeed({ initial, network }: { initial: FeedEvent[]; netwo
   const [d] = usePolling<{ events: FeedEvent[] }>(`/api/events?limit=100${types ? `&types=${types}` : ""}`, 10_000, { events: initial });
   return (
     <>
-      <div className="mb-4 flex flex-wrap gap-1">
+      <div className="mb-3 flex flex-wrap border-b border-line">
         {FILTERS.map(([k, label]) => (
-          <button key={k} className={`btn py-1.5 ${types === k ? "border-long/50 text-long" : "text-muted"}`} onClick={() => setTypes(k)} aria-pressed={types === k}>
+          <button key={k} className="tab" onClick={() => setTypes(k)} aria-pressed={types === k}>
             {label}
           </button>
         ))}
       </div>
-      <div className="panel px-4">
+      <div className="panel">
         <EventFeed events={d.events} network={network} showMarket />
       </div>
     </>
