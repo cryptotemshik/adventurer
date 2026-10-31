@@ -27,7 +27,7 @@ const CODE: Record<string, [string, string]> = {
   alert: ["ALERT", "text-short"],
 };
 
-export type FeedEvent = EventRow & { ticker?: string | null; mint?: string | null };
+export type FeedEvent = EventRow & { ticker?: string | null; mint?: string | null; demo?: boolean };
 
 export function EventFeed({ events, network, showMarket = false }: { events: FeedEvent[]; network: string; showMarket?: boolean }) {
   if (!events.length) return <p className="py-6 text-center text-sm text-muted">No events yet.</p>;
@@ -52,7 +52,10 @@ export function EventFeed({ events, network, showMarket = false }: { events: Fee
                   )}
                 </td>
               )}
-              <td className="max-w-0 truncate whitespace-normal text-text/90">{e.message}</td>
+              <td className="max-w-0 truncate whitespace-normal text-text/90">
+                {e.message}
+                {e.demo && showMarket && <span className="tag ml-2">demo</span>}
+              </td>
               <td className="w-14 text-right">
                 {link && (
                   <a href={link} target="_blank" rel="noreferrer" className="num text-[11px] text-muted hover:text-text">

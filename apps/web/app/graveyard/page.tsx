@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Graveyard() {
   const rows = (await listMarkets(await getDb(), { status: ["stopped", "dead"], limit: 500 })).map(toView);
-  const liquidated = rows.filter((m) => m.endReason === "liquidated").length;
+  const liquidated = rows.filter((m) => m.endReason === "liquidated" && !m.demo).length;
   return (
     <>
       <PageTitle
@@ -44,6 +44,7 @@ export default async function Graveyard() {
                     <Link href={`/t/${m.mint}`} className="font-semibold hover:underline">
                       ${m.ticker}
                     </Link>
+                    {m.demo && <span className="tag ml-2">demo</span>}
                   </td>
                   <td className="num text-xs text-muted">
                     {tombstoneReason({ status: m.endReason === "liquidated" ? "liquidated" : (m.status as "stopped" | "dead"), strategy: m.strategy, createdAt: m.createdAt, endedAt: m.endedAt ?? Date.now() })}

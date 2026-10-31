@@ -85,7 +85,7 @@ export function Empty({ title, children }: { title: string; children?: React.Rea
 }
 
 export function CoinImage({ src, ticker, size = 48 }: { src: string; ticker: string; size?: number }) {
-  const safe = src && /^(https:\/\/|ipfs:\/\/)/.test(src) ? src.replace(/^ipfs:\/\//, "https://ipfs.io/ipfs/") : "";
+  const safe = src && /^(https:\/\/|ipfs:\/\/|\/demo\/)/.test(src) ? src.replace(/^ipfs:\/\//, "https://ipfs.io/ipfs/") : "";
   return safe ? (
     // eslint-disable-next-line @next/next/no-img-element
     <img src={safe} alt={`$${ticker}`} width={size} height={size} loading="lazy" className="shrink-0 rounded-[2px] object-cover" style={{ width: size, height: size }} />

@@ -78,7 +78,9 @@ export function VotePanel({ market, vote, rounds }: { market: MarketView; vote: 
           <p className="num mt-2 text-xs text-muted">
             {vote.tally.wallets} wallets · {vote.tally.quorum ? <span className="text-long">quorum reached</span> : "no quorum yet"} · now: {market.direction}
           </p>
-          {publicKey ? (
+          {market.demo ? (
+            <p className="mt-3 text-xs text-muted">Voting is disabled on demo markets.</p>
+          ) : publicKey ? (
             <div className="mt-3 grid grid-cols-3 gap-2">
               {(["long", "short", "flat"] as const).map((c) => (
                 <button key={c} className={`btn ${c === "long" ? "text-long" : c === "short" ? "text-short" : "text-flat"}`} disabled={!!busy} onClick={() => void cast(c)}>

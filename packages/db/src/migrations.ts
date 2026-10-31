@@ -38,5 +38,11 @@ export const MIGRATIONS: { name: string; statements: string[] }[] = [
       "CREATE TABLE `vote_rounds` (\n\t`market_id` text NOT NULL,\n\t`round` text NOT NULL,\n\t`status` text DEFAULT 'open' NOT NULL,\n\t`long_w` real DEFAULT 0 NOT NULL,\n\t`short_w` real DEFAULT 0 NOT NULL,\n\t`flat_w` real DEFAULT 0 NOT NULL,\n\t`wallets` integer DEFAULT 0 NOT NULL,\n\t`quorum` integer DEFAULT false NOT NULL,\n\t`winner` text,\n\t`applied` integer DEFAULT false NOT NULL,\n\t`finalized_at` integer,\n\tPRIMARY KEY(`market_id`, `round`)\n);",
       "CREATE TABLE `votes` (\n\t`market_id` text NOT NULL,\n\t`round` text NOT NULL,\n\t`wallet` text NOT NULL,\n\t`choice` text NOT NULL,\n\t`balance` text NOT NULL,\n\t`signature` text NOT NULL,\n\t`at` integer NOT NULL,\n\tPRIMARY KEY(`market_id`, `round`, `wallet`)\n);"
     ]
+  },
+  {
+    "name": "0001_demo",
+    "statements": [
+      "ALTER TABLE `markets` ADD `demo` integer DEFAULT false NOT NULL;"
+    ]
   }
 ];

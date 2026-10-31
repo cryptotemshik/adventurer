@@ -15,6 +15,7 @@ export function MarketCard({ m }: { m: MarketView }) {
             {m.flagship && <span className="tag text-accent">flagship</span>}
             {m.community && <span className="tag">vote</span>}
             {m.deskBadge && <span className="tag">desk</span>}
+            {m.demo && <span className="tag">demo</span>}
           </div>
           <div className="truncate text-xs text-muted">{m.name}</div>
         </div>

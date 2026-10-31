@@ -64,6 +64,7 @@ export function MarketDetail({ initial, siteUrl }: { initial: Detail; siteUrl: s
             {m.flagship && <span className="tag border-accent/50 text-accent">flagship</span>}
             {m.community && <span className="tag">community</span>}
             {m.paused && <span className="tag text-accent">close-only</span>}
+            {m.demo && <span className="tag">demo</span>}
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <StrategyBadge label={m.strategyLabel} direction={m.direction} />
@@ -81,7 +82,7 @@ export function MarketDetail({ initial, siteUrl }: { initial: Detail; siteUrl: s
         <div className="w-full md:w-64">
           <RiskMeter toSl={m.riskToSl} toLiq={m.riskToLiq} />
           <div className="mt-3 flex flex-wrap gap-2">
-            {m.mint && (
+            {m.mint && !m.demo && (
               <a className="btn btn-long" href={pumpFun(m.mint)} target="_blank" rel="noreferrer">
                 Buy on pump.fun
               </a>
@@ -96,6 +97,11 @@ export function MarketDetail({ initial, siteUrl }: { initial: Detail; siteUrl: s
         </div>
       </header>
 
+      {m.demo && (
+        <p className="border-l-2 border-flat pl-3 text-sm text-muted">
+          Demo market. The position is simulated and priced live from Hyperliquid; the coin, fees and burns are illustrative and do not exist on chain.
+        </p>
+      )}
       {m.status === "cooldown" && m.cooldownUntil && (
         <p className="border-l-2 border-flat pl-3 text-sm text-muted">Stop-loss hit. Cooling down until {new Date(m.cooldownUntil).toISOString().slice(0, 16).replace("T", " ")} UTC, then re-entering with new fees.</p>
       )}
@@ -113,7 +119,6 @@ export function MarketDetail({ initial, siteUrl }: { initial: Detail; siteUrl: s
           <section className="panel p-4" aria-label="position">
             <div className="mb-3 flex items-center justify-between">
               <h2 className="text-sm font-semibold">Position</h2>
-              <span className="num text-xs text-muted">hyperliquid {d.network}</span>
             </div>
             {legs.length === 0 ? (
               <p className="py-4 text-sm text-muted">No open position.</p>

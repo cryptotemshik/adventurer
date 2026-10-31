@@ -12,7 +12,7 @@ export interface ProofRow {
 
 export async function proofRows(): Promise<ProofRow[]> {
   const db = await getDb();
-  const markets = await listMarkets(db, { limit: 500, includeHidden: true });
+  const markets = await listMarkets(db, { limit: 500, includeHidden: true, demo: false });
   const out: ProofRow[] = [];
   for (const m of markets) {
     const sums = await ledgerSums(db, m.id);

@@ -1,7 +1,7 @@
 import { listMarkets, type MarketSort } from "@bias/db";
 import { getDb } from "@/lib/db";
 import { handle, ok } from "@/lib/http";
-import { toView } from "@/lib/view";
+import { withLive } from "@/lib/live";
 
 export const GET = handle(async (req: Request) => {
   const u = new URL(req.url).searchParams;
@@ -18,5 +18,5 @@ export const GET = handle(async (req: Request) => {
     limit: Number(u.get("limit") ?? 60),
     offset: Number(u.get("offset") ?? 0),
   });
-  return ok({ markets: rows.map(toView) }, { cache: 5 });
+  return ok({ markets: await withLive(rows) }, { cache: 5 });
 });

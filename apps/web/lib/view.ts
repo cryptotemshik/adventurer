@@ -27,6 +27,7 @@ export interface MarketView {
   direction: Direction;
   paused: boolean;
   hidden: boolean;
+  demo: boolean;
   createdAt: number;
   endedAt: number | null;
   endReason: string | null;
@@ -94,6 +95,7 @@ export function toView(m: Market): MarketView {
     direction: m.direction as Direction,
     paused: m.paused,
     hidden: m.hidden,
+    demo: m.demo,
     createdAt: m.createdAt,
     endedAt: m.endedAt,
     endReason: m.endReason,

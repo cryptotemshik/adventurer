@@ -1,0 +1,1 @@
+ALTER TABLE `markets` ADD `demo` integer DEFAULT false NOT NULL;

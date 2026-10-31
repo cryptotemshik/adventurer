@@ -11,7 +11,7 @@ const esc = (v: unknown) => {
 };
 
 export const GET = handle(async () => {
-  const rows = (await listMarkets(await getDb(), { limit: 500 })).map(toView);
+  const rows = (await listMarkets(await getDb(), { limit: 500, demo: false })).map(toView);
   const cols: [string, (m: MarketView) => unknown][] = [
     ["ticker", (m) => m.ticker],
     ["name", (m) => m.name],

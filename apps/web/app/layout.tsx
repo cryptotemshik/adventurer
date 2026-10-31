@@ -34,7 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main id="main" className="mx-auto max-w-[1280px] px-4 py-5">
             {children}
           </main>
-          <Footer network={process.env.HL_NETWORK ?? "testnet"} />
+          <Footer />
         </Providers>
       </body>
     </html>

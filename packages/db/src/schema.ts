@@ -28,6 +28,8 @@ export const markets = sqliteTable(
     direction: text("direction").notNull().default("long"),
     paused: integer("paused", { mode: "boolean" }).notNull().default(false),
     hidden: integer("hidden", { mode: "boolean" }).notNull().default(false),
+    /** simulated showcase market (live prices, no real coin or funds); never in /proof or exports */
+    demo: integer("demo", { mode: "boolean" }).notNull().default(false),
     tpStages: text("tp_stages").notNull().default("{}"),
     consecutiveStops: integer("consecutive_stops").notNull().default(0),
     cooldownUntil: integer("cooldown_until"),

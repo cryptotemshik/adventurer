@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic";
 export default async function BiasPage() {
   const db = await getDb();
   const cfg = await getConfig();
-  const all = (await listMarkets(db, { limit: 500, includeHidden: true })).map(toView);
+  const all = (await listMarkets(db, { limit: 500, includeHidden: true, demo: false })).map(toView);
   const flagship = all.find((m) => m.flagship);
   const platformSol = all.reduce((a, m) => a + m.feesPlatformSol, 0);
   const events = (await listEvents(db, { types: ["buyback", "burn"], limit: 200 })).filter((e) => e.marketId === "platform" || e.marketId === flagship?.id);

@@ -34,6 +34,8 @@ export interface MarketFilter {
   q?: string;
   includeHidden?: boolean;
   includePending?: boolean;
+  /** undefined = both, true = only demo, false = only real */
+  demo?: boolean;
   limit?: number;
   offset?: number;
 }
@@ -45,6 +47,7 @@ export async function listMarkets(db: Db, f: MarketFilter = {}): Promise<Market[
   if (!f.includeHidden) where.push(eq(t.markets.hidden, false));
   if (!f.includePending) where.push(sql`${t.markets.status} != 'pending_launch'`);
   if (f.status?.length) where.push(inArray(t.markets.status, f.status));
+  if (f.demo !== undefined) where.push(eq(t.markets.demo, f.demo));
   if (f.strategy) where.push(sql`json_extract(${t.markets.strategy}, '$.type') = ${f.strategy}`);
   if (f.asset) where.push(sql`${t.markets.strategy} LIKE ${`%"${f.asset}"%`}`);
   if (f.side) where.push(eq(t.markets.direction, f.side));
@@ -103,7 +106,7 @@ export async function activeMarkets(db: Db): Promise<Market[]> {
   return db
     .select()
     .from(t.markets)
-    .where(sql`${t.markets.status} NOT IN ('pending_launch')`)
+    .where(and(sql`${t.markets.status} NOT IN ('pending_launch')`, eq(t.markets.demo, false)))
     .orderBy(asc(t.markets.idx));
 }
 
@@ -127,20 +130,20 @@ export async function addEvent(db: Db, e: Omit<typeof t.events.$inferInsert, "at
 export async function listEvents(
   db: Db,
   o: { marketId?: string; types?: string[]; limit?: number; before?: number } = {},
-): Promise<(EventRow & { ticker: string | null; mint: string | null; image: string | null })[]> {
+): Promise<(EventRow & { ticker: string | null; mint: string | null; image: string | null; demo: boolean })[]> {
   const where: SQL[] = [];
   if (o.marketId) where.push(eq(t.events.marketId, o.marketId));
   if (o.types?.length) where.push(inArray(t.events.type, o.types));
   if (o.before) where.push(lt(t.events.id, o.before));
   where.push(or(sql`${t.markets.hidden} IS NULL`, eq(t.markets.hidden, false))!);
   const rows = await db
-    .select({ e: t.events, ticker: t.markets.ticker, mint: t.markets.mint, image: t.markets.image })
+    .select({ e: t.events, ticker: t.markets.ticker, mint: t.markets.mint, image: t.markets.image, demo: t.markets.demo })
     .from(t.events)
     .leftJoin(t.markets, eq(t.events.marketId, t.markets.id))
     .where(and(...where))
     .orderBy(desc(t.events.id))
     .limit(Math.min(o.limit ?? 50, 1000));
-  return rows.map((r) => ({ ...r.e, ticker: r.ticker, mint: r.mint, image: r.image }));
+  return rows.map((r) => ({ ...r.e, ticker: r.ticker, mint: r.mint, image: r.image, demo: !!r.demo }));
 }
 
 /** Idempotent ledger write: (opId, type) is unique, so a retried step never double-counts. */

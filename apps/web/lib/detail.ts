@@ -3,6 +3,8 @@ import { equitySeries, getMarket, getPosition, listEvents, listRounds, listVotes
 import { roundId, tallyVotes } from "@bias/engine";
 import { getDb } from "./db";
 import { safeJson, toView } from "./view";
+import { repriceLegs, withLive } from "./live";
+import { allMids } from "./hl-public";
 import { getConfig } from "./config";
 import { tokenSupply } from "./solana";
 
@@ -32,11 +34,23 @@ export async function getDetail(id: string) {
     );
     vote = { round, endsAt: Date.parse(`${round}T00:00:00Z`) + 86_400_000, tally: t, votes: votes.length };
   }
+  const market = m.demo ? (await withLive([m]))[0]! : toView(m);
+  let legs = safeJson<Parameters<typeof repriceLegs>[0]>(pos?.legs, []);
+  let marks = safeJson<Record<string, string>>(pos?.marks, {});
+  const series = equity.map((e) => ({ t: e.at, v: Number(e.equityUsd) }));
+  if (m.demo && legs.length) {
+    try {
+      const mids = await allMids();
+      legs = repriceLegs(legs, mids);
+      marks = Object.fromEntries(legs.map((l) => [l.asset, mids[l.asset] ?? l.entryPx]));
+      series.push({ t: Date.now(), v: market.equityUsd });
+    } catch {}
+  }
   return {
-    market: toView(m),
-    position: pos ? { legs: safeJson(pos.legs, []), triggers: safeJson(pos.triggers, []), marks: safeJson(pos.marks, {}), updatedAt: pos.updatedAt } : null,
+    market,
+    position: pos ? { legs, triggers: safeJson(pos.triggers, []), marks, updatedAt: pos.updatedAt } : null,
     events,
-    equity: equity.map((e) => ({ t: e.at, v: Number(e.equityUsd) })),
+    equity: series,
     rounds,
     vote,
     network: process.env.HL_NETWORK ?? "testnet",

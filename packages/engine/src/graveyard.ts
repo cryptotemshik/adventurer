@@ -23,7 +23,7 @@ function hash(s: string): number {
 }
 
 export function epitaph(ticker: string, mint: string): string {
-  return EPITAPHS[hash(mint) % EPITAPHS.length]!.replace("${T}", `$${ticker}`);
+  return EPITAPHS[hash(`${ticker}:${mint}`) % EPITAPHS.length]!.replace("${T}", `$${ticker}`);
 }
 
 export function tombstoneReason(i: {

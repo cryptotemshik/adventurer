@@ -3,7 +3,7 @@ import Link from "next/link";
 import { listMarkets, type MarketSort } from "@bias/db";
 import { fmtUsd } from "@bias/shared";
 import { getDb } from "@/lib/db";
-import { toView } from "@/lib/view";
+import { withLive } from "@/lib/live";
 import { Pnl, StatusBadge, StrategyBadge, Empty } from "@/components/ui";
 
 export const metadata: Metadata = { title: "Explore", description: "All bias markets in one table, exportable as CSV." };
@@ -25,7 +25,7 @@ const COLS: [MarketSort | null, string][] = [
 export default async function Explore({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
   const sp = await searchParams;
   const sort = (sp.sort as MarketSort) || "newest";
-  const rows = (await listMarkets(await getDb(), { sort, q: sp.q, status: sp.status?.split(","), limit: 500 })).map(toView);
+  const rows = await withLive(await listMarkets(await getDb(), { sort, q: sp.q, status: sp.status?.split(","), limit: 500 }));
   return (
     <>
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3 border-b border-line pb-4">
@@ -71,6 +71,7 @@ export default async function Explore({ searchParams }: { searchParams: Promise<
                       ${m.ticker}
                     </Link>
                     {m.community && <span className="tag ml-2">vote</span>}
+                    {m.demo && <span className="tag ml-2">demo</span>}
                   </td>
                   <td className="px-3">
                     <StrategyBadge label={m.strategyLabel} direction={m.direction} />

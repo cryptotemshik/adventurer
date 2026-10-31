@@ -1,7 +1,7 @@
 import "server-only";
 import { listMarkets } from "@bias/db";
 import { getDb } from "./db";
-import { toView } from "./view";
+import { withLive } from "./live";
 
 export interface PlatformStats {
   marketsLive: number;
@@ -12,11 +12,13 @@ export interface PlatformStats {
   boughtBackSol: number;
   slStops: number;
   liquidations: number;
+  /** true when every market shown is a demo market */
+  demoOnly: boolean;
 }
 
 export async function platformStats(): Promise<PlatformStats> {
   const db = await getDb();
-  const all = (await listMarkets(db, { limit: 500, includeHidden: true })).map(toView);
+  const all = await withLive(await listMarkets(db, { limit: 500, includeHidden: true }));
   return {
     marketsLive: all.filter((m) => m.status === "live").length,
     marketsTotal: all.length,
@@ -25,6 +27,7 @@ export async function platformStats(): Promise<PlatformStats> {
     profitTakenUsd: all.reduce((a, m) => a + m.profitTakenUsd, 0),
     boughtBackSol: all.reduce((a, m) => a + m.boughtBackSol, 0),
     slStops: all.reduce((a, m) => a + m.consecutiveStops, 0),
-    liquidations: all.filter((m) => m.endReason === "liquidated").length,
+    liquidations: all.filter((m) => m.endReason === "liquidated" && !m.demo).length,
+    demoOnly: all.length > 0 && all.every((m) => m.demo),
   };
 }

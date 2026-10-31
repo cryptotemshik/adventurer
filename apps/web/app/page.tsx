@@ -2,7 +2,7 @@ import Link from "next/link";
 import { listMarkets } from "@bias/db";
 import { fmtUsd } from "@bias/shared";
 import { getDb } from "@/lib/db";
-import { toView } from "@/lib/view";
+import { withLive } from "@/lib/live";
 import { platformStats } from "@/lib/stats";
 import { getConfig } from "@/lib/config";
 import { MarketsGrid } from "@/components/MarketsGrid";
@@ -30,6 +30,7 @@ export default async function Home() {
         </Link>
       </section>
       <section className="mb-6" aria-label="platform stats">
+        {stats.demoOnly && <div className="label mb-1.5">Demo data · positions priced live from Hyperliquid</div>}
         <StatStrip>
           <Stat label="Live markets" value={`${stats.marketsLive} / ${stats.marketsTotal}`} />
           <Stat label="Total equity" value={fmtUsd(stats.totalEquityUsd)} />
@@ -38,7 +39,7 @@ export default async function Home() {
           <Stat label="Bought back" value={`${stats.boughtBackSol.toFixed(2)} SOL`} />
         </StatStrip>
       </section>
-      <MarketsGrid initial={rows.map(toView)} allowlist={cfg.allowlist} />
+      <MarketsGrid initial={await withLive(rows)} allowlist={cfg.allowlist} />
     </>
   );
 }
