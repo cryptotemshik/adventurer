@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { DISCLAIMER } from "@bias/shared";
+import { DISCLAIMER, X_URL } from "@bias/shared";
 
 const LINKS = [
   ["/", "Markets"],
@@ -22,6 +22,9 @@ export function Footer() {
               {label}
             </Link>
           ))}
+          <a href={X_URL} target="_blank" rel="noreferrer" className="hover:text-text">
+            X @biasdotfun
+          </a>
         </nav>
         <p className="mt-3 text-[11px] leading-relaxed text-muted/70">
           {DISCLAIMER.replace(/(^|\. )([a-z])/g, (_m, p: string, c: string) => p + c.toUpperCase())}

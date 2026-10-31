@@ -9,14 +9,14 @@ creator is the flagship market's Solana vault and its creator fees enter the sam
 |---|---|
 | **Name** | `bias` |
 | **Ticker** | `BIAS` |
-| **Description** | `every coin has a bias. $BIAS is the flagship market: its creator fees fund a leveraged position on hyperliquid, profit buys back & burns $BIAS. 10% of fees from every market burns $BIAS too. stops included. <SITE_URL>` |
+| **Description** | `every coin has a bias. $BIAS is the flagship market: its creator fees fund a leveraged position on hyperliquid, profit buys back & burns $BIAS. 10% of fees from every market burns $BIAS too. stops included. biasonsol.fun` |
 | **Image** | `launch/coin-1000.png` (1000×1000, same artwork as the X avatar) |
-| **X** | `https://x.com/biasdotfun` (or the handle actually registered, see `twitter/profile.md`) |
+| **X** | `https://x.com/biasdotfun` |
 | **Telegram** | — |
-| **Website** | `<SITE_URL>` |
+| **Website** | `https://biasonsol.fun` |
 | **Dev buy** | optional, ≤ `MAX_DEV_BUY_SOL` |
 
-Description length: well under the 500-char limit once `<SITE_URL>` is filled in.
+Description length: well under the 500-char limit.
 
 ## Flagship strategy (default)
 

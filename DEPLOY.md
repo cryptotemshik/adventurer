@@ -27,7 +27,13 @@ The worker bundle is ≈ 2.6 MB gzip (free limit: 3 MB). If it grows past the li
 
 `.github/workflows/deploy.yml` deploys on every push to `dapp` once `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` are repository secrets.
 
-## Custom domain (optional, free)
+## Custom domain: biasonsol.fun
+
+1. Cloudflare dashboard → Add a domain → `biasonsol.fun` → Free plan; set the two Cloudflare nameservers at the registrar.
+2. When the zone is Active: add `"routes": [{ "pattern": "biasonsol.fun", "custom_domain": true }]` to `apps/web/wrangler.jsonc`, set `NEXT_PUBLIC_SITE_URL` to `https://biasonsol.fun`, `pnpm deploy`.
+3. GitHub variable `BIAS_DB_URL=https://biasonsol.fun/api/internal/sql` (the workers.dev URL keeps working too).
+
+## Other custom domain (optional, free)
 
 Cloudflare dashboard → Workers → `bias` → Settings → Domains & Routes → add a domain on your Cloudflare zone. Then update `NEXT_PUBLIC_SITE_URL` in `wrangler.jsonc` and `BIAS_DB_URL` in GitHub variables.
 

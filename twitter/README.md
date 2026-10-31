@@ -23,7 +23,7 @@ Profile assets: `images/avatar.png` (500×500), `images/banner.png` (1500×500).
 
 ## Before publishing
 
-- Replace every `<CA>`, `<SITE_URL>`, `<FLAGSHIP_STRATEGY>`, `<N>`, `<X>`, `<ASSET>`, `<SIDE>`.
+- Replace every `<CA>`, `<FLAGSHIP_STRATEGY>`, `<N>`, `<X>`, `<ASSET>`, `<SIDE>`.
 - #5 goes out only after: $BIAS is created through `/launch` (flagship), CA copied into `BIAS_MINT`, site redeployed, `/bias` and `/proof` checked (see `../launch/coin.md`).
 - Fee split and tier thresholds in #6 must match the deployed `.env`.
 

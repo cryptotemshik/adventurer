@@ -50,7 +50,7 @@ export function MarketDetail({ initial, siteUrl }: { initial: Detail; siteUrl: s
   for (const t of trig.filter((t) => t.asset === firstAsset)) {
     levels.push({ price: +t.triggerPx, label: t.label.toUpperCase(), color: t.label === "sl" ? "#FF3B5C" : "#00E58F", dashed: t.label !== "sl" });
   }
-  const share = `https://x.com/intent/tweet?text=${encodeURIComponent(`$${m.ticker} has a bias: ${m.strategyLabel}. fees fund the trade, profit burns the supply. ${siteUrl}/t/${m.mint}`)}`;
+  const share = `https://x.com/intent/tweet?via=biasdotfun&text=${encodeURIComponent(`$${m.ticker} has a bias: ${m.strategyLabel}. fees fund the trade, profit burns the supply. ${siteUrl}/t/${m.mint}`)}`;
 
   return (
     <div className="space-y-6">

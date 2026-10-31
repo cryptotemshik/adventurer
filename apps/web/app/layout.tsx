@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   title: { default: "bias · coins with a position", template: "%s · bias" },
   description: "Launch a coin on pump.fun with a leveraged position on Hyperliquid. Creator fees fund the position; realized profit buys back and burns the coin.",
   openGraph: { type: "website", siteName: "bias", images: ["/og-default.png"] },
-  twitter: { card: "summary_large_image", images: ["/og-default.png"] },
+  twitter: { card: "summary_large_image", site: "@biasdotfun", creator: "@biasdotfun", images: ["/og-default.png"] },
   icons: { icon: "/logo.svg" },
 };
 

@@ -3,10 +3,10 @@
 | Field | Value |
 |---|---|
 | **Name** | `BIAS` |
-| **Handle** | `@biasdotfun` (check availability; fallbacks: `@everycoinhasabias`, `@biasmarkets`) |
+| **Handle** | `@biasdotfun` (https://x.com/biasdotfun) |
 | **Bio** (≤160) | `every coin has a bias. launch on pump.fun, pick a position. fees fund the trade on hyperliquid, profit buys back & burns. stops included. $BIAS` |
 | **Location** | `the order book` |
-| **Website** | `<SITE_URL>` |
+| **Website** | `https://biasonsol.fun` |
 | **Pinned** | tweet #5 (launch). Before launch: #3, then #4. |
 | **Avatar** | `images/avatar.png` — 500×500 |
 | **Banner** | `images/banner.png` — 1500×500 |

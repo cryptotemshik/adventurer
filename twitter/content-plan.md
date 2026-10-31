@@ -1,7 +1,7 @@
 # Content plan — launch day (Sat 31.10.2026)
 
 Countdown starts 12:53 CET. **T0 = 21:00 CET / 20:00 UTC / 16:00 New York.**
-Tone: dry trader humour, lowercase, short. All tweets in English. Replace `<CA>`, `<SITE_URL>`, `<...>` before posting.
+Tone: dry trader humour, lowercase, short. All tweets in English. Replace `<CA>`, `<...>` before posting.
 Times below: CET · UTC · NY.
 
 ---
@@ -88,7 +88,7 @@ its bias: <FLAGSHIP_STRATEGY>
 fees → position. profit → buyback & burn.
 
 CA: <CA>
-launch yours: <SITE_URL>
+launch yours: biasonsol.fun
 ```
 
 `<FLAGSHIP_STRATEGY>` default: `BTC 40% / SOL 30% / HYPE 30% LONG 3× (holders vote daily)` — must match `launch/coin.md` and the deployed market.
@@ -117,7 +117,7 @@ how fees split on every market:
 10% → buys back & burns $BIAS
 
 hold $BIAS: free launches, baskets, pair trades & funding farms.
-every claim, trade and burn: <SITE_URL>/proof
+every claim, trade and burn: biasonsol.fun/proof
 ```
 
 **Image:** `images/tweet-06.png` — neon donut 70 / 20 / 10, labels `position · launcher · $BIAS burn`.
@@ -152,7 +152,7 @@ first 3 hours:
 <X> SOL in fees routed to positions
 most popular bias: <ASSET> <SIDE>
 
-live feed: <SITE_URL>/activity
+live feed: biasonsol.fun/activity
 ```
 
 **Image:** `images/tweet-08.png` — 3×3 grid of market cards with made-up tickers and different strategies (mock data). If possible, replace with a real screenshot of `/`.
@@ -167,7 +167,7 @@ live feed: <SITE_URL>/activity
 don't trust the dashboard.
 
 every vault on solana, every account on hyperliquid, every claim, trade, buyback and burn, linked on one page.
-<SITE_URL>/proof
+biasonsol.fun/proof
 
 (there's also a graveyard. we'd like it to stay empty.)
 ```

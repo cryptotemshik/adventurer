@@ -106,3 +106,7 @@ export const RULES = {
 export const DISCLAIMER =
   "positions are leveraged and can lose everything. vaults are operated by the platform. memecoins are extremely risky. nothing here is financial advice.";
 export const SLOGAN = "every coin has a bias.";
+
+export const X_HANDLE = "biasdotfun";
+export const X_URL = "https://x.com/biasdotfun";
+export const DOMAIN = "biasonsol.fun";

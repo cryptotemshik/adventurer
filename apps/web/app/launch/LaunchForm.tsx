@@ -177,7 +177,7 @@ export function LaunchForm({ allowlist, launchFeeSol, maxDevBuy, vaultRentSol, l
 
   if (step === "done" && done) {
     const url = `${siteUrl}/t/${done.mint}`;
-    const share = `https://x.com/intent/tweet?text=${encodeURIComponent(
+    const share = `https://x.com/intent/tweet?via=biasdotfun&text=${encodeURIComponent(
       `launched $${ticker.toUpperCase()}. its bias: ${preview?.legs.length ? strategyText(strategy) : ""}. fees fund the trade, profit burns the supply. ${url}`,
     )}`;
     return (
