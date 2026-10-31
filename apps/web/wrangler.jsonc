@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bias",
+  "main": "worker.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "workers_dev": true,
+  "preview_urls": false,
+  "observability": { "enabled": true },
+  "durable_objects": {
+    "bindings": [{ "name": "BIAS_DB", "class_name": "BiasDb" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["BiasDb"] }],
+  "vars": {
+    "NEXT_PUBLIC_SITE_URL": "https://bias.michaelworkarb.workers.dev",
+    "HL_NETWORK": "testnet",
+    "LAUNCHES_ENABLED": "true",
+    "TRADING_MODE": "normal",
+    "DRY_RUN": "false"
+  }
+}

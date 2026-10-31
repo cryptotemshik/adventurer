@@ -1,0 +1,46 @@
+# MONEY FLOWS: master seed (claim, split, payouts, bridge, agent approval, withdraw, buyback & burn).
+name: buyback
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: buyback
+  cancel-in-progress: false
+jobs:
+  flows:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    # the production environment should restrict deployments to the default branch (SETUP.md)
+    env:
+      MASTER_SEED: ${{ secrets.MASTER_SEED }}
+      JOB_TOKEN: ${{ secrets.JOB_TOKEN }}
+      BIAS_DB_URL: ${{ vars.BIAS_DB_URL }}
+      SOLANA_RPC: ${{ secrets.SOLANA_RPC }}
+      SOLANA_RPC_FALLBACK: https://api.mainnet-beta.solana.com
+      HL_NETWORK: ${{ vars.HL_NETWORK || 'testnet' }}
+      TREASURY_PUBKEY: ${{ vars.TREASURY_PUBKEY }}
+      BIAS_MINT: ${{ vars.BIAS_MINT }}
+      DRY_RUN: ${{ vars.DRY_RUN || 'false' }}
+      MIN_BUYBACK_USD: ${{ vars.MIN_BUYBACK_USD || '15' }}
+    steps:
+      - name: configured?
+        id: cfg
+        run: |
+          if [ -z "$MASTER_SEED" ] || [ -z "$JOB_TOKEN" ] || [ -z "$BIAS_DB_URL" ]; then
+            echo "::notice::MASTER_SEED / JOB_TOKEN / BIAS_DB_URL not configured yet — skipping (see SETUP.md)"; echo "skip=1" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.cfg.outputs.skip != '1'
+      - uses: pnpm/action-setup@v4
+        if: steps.cfg.outputs.skip != '1'
+      - uses: actions/setup-node@v4
+        if: steps.cfg.outputs.skip != '1'
+        with: { node-version: 22, cache: pnpm }
+      - if: steps.cfg.outputs.skip != '1'
+        run: pnpm install --frozen-lockfile --filter @bias/jobs...
+      - if: steps.cfg.outputs.skip != '1'
+        run: pnpm job:buyback

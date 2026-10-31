@@ -11,3 +11,5 @@ coverage
 .DS_Store
 test-results
 playwright-report
+.data
+apps/web/test-results

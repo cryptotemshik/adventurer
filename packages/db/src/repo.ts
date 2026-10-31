@@ -220,7 +220,7 @@ export async function releaseLock(db: Db, name: string, holder: string) {
 // ---------------- address pool ----------------
 export async function takeAddress(db: Db) {
   const rows = await db.all<{ idx: number; sol_vault: string; hl_account: string; hl_agent: string }>(
-    sql`UPDATE address_pool SET used = 1 WHERE idx = (SELECT idx FROM address_pool WHERE used = 0 ORDER BY idx LIMIT 1) RETURNING idx, sol_vault, hl_account, hl_agent`,
+    sql`UPDATE address_pool SET used = 1 WHERE idx = (SELECT idx FROM address_pool WHERE used = 0 AND hl_agent != '' AND sol_vault != '' ORDER BY idx LIMIT 1) RETURNING idx, sol_vault, hl_account, hl_agent`,
   );
   const r = rows[0] as unknown;
   if (!r) return null;
@@ -229,10 +229,18 @@ export async function takeAddress(db: Db) {
 }
 export async function poolStats(db: Db) {
   const r = await db
-    .select({ free: sql<number>`sum(case when used = 0 then 1 else 0 end)`, total: sql<number>`count(*)`, maxIdx: sql<number>`max(idx)` })
+    .select({ free: sql<number>`sum(case when used = 0 and hl_agent != '' and sol_vault != '' then 1 else 0 end)`, unused: sql<number>`sum(case when used = 0 then 1 else 0 end)`, total: sql<number>`count(*)`, maxIdx: sql<number>`max(idx)` })
     .from(t.addressPool);
-  return { free: Number(r[0]?.free ?? 0), total: Number(r[0]?.total ?? 0), maxIdx: r[0]?.maxIdx === null ? -1 : Number(r[0]?.maxIdx ?? -1) };
+  return { free: Number(r[0]?.free ?? 0), unused: Number(r[0]?.unused ?? 0), total: Number(r[0]?.total ?? 0), maxIdx: r[0]?.maxIdx === null ? -1 : Number(r[0]?.maxIdx ?? -1) };
 }
+/** Rows created by the master side (vault + HL account) that still need the agent address from the agent side. */
+export async function poolMissingAgents(db: Db, limit = 200) {
+  return db.select().from(t.addressPool).where(eq(t.addressPool.hlAgent, "")).orderBy(asc(t.addressPool.idx)).limit(limit);
+}
+export async function setPoolAgent(db: Db, idx: number, hlAgent: string) {
+  await db.update(t.addressPool).set({ hlAgent }).where(eq(t.addressPool.idx, idx));
+}
+
 export async function addPoolAddresses(db: Db, rows: { idx: number; solVault: string; hlAccount: string; hlAgent: string }[]) {
   if (!rows.length) return;
   await db.insert(t.addressPool).values(rows.map((r) => ({ ...r, createdAt: now() }))).onConflictDoNothing();

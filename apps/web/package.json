@@ -1,0 +1,48 @@
+{
+  "name": "@bias/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.worker.json --noEmit",
+    "cf:build": "opennextjs-cloudflare build",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && wrangler deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@bias/chain": "workspace:*",
+    "@bias/db": "workspace:*",
+    "@bias/engine": "workspace:*",
+    "@bias/shared": "workspace:*",
+    "@noble/curves": "^2.4.0",
+    "@noble/hashes": "^2.4.0",
+    "@opennextjs/cloudflare": "1.20.15",
+    "@solana/wallet-adapter-base": "^0.9.28",
+    "@solana/wallet-adapter-react": "^0.15.40",
+    "@solana/web3.js": "^1.99.0",
+    "bs58": "^6.0.0",
+    "decimal.js": "^10.6.0",
+    "drizzle-orm": "^0.45.4",
+    "lightweight-charts": "^5.2.1",
+    "next": "15.5.28",
+    "react": "~19.1.10",
+    "react-dom": "~19.1.10",
+    "server-only": "^0.0.1",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261031.1",
+    "@playwright/test": "1.63.0",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "postcss": "^8.5.32",
+    "tailwindcss": "^4.3.3",
+    "wrangler": "^4.156.0"
+  }
+}

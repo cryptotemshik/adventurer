@@ -9,7 +9,7 @@ One line per decision: what was decided and why.
 - **Postgres advisory lock → `locks` table with TTL** + GitHub Actions `concurrency` groups; the DO is single-threaded so lock acquisition is atomic.
 - **No docker-compose** — there is no Postgres; local dev uses `node:sqlite` (`apps/web/.data/bias.db`).
 - **Seeds never touch Cloudflare**: market addresses are pre-provisioned by `jobs/provision.ts` (GitHub Actions, seeds) into `address_pool` (public keys only). `/api/launch/prepare` takes the next free row. Hardened ed25519 derivation makes xpub-style public derivation impossible for Solana, so a pool is the only seed-free option.
-- **GitHub Actions schedule**: repo is private → `tick` every 30 min (`*/30`), `buyback` hourly at :17 (money flows) — keeps us inside the 2,000 free private minutes; if the repo is made public switch tick to `*/15`. Native HL SL/TP triggers protect positions between runs.
+- **GitHub Actions schedule**: the repo is public (unlimited free minutes) → `tick` every 15 min, `buyback` hourly at :17 (money flows). If the repo goes private, switch tick to `*/30` (2,000 free minutes). Native HL SL/TP triggers protect positions between runs. Schedules only run on the default branch (`dapp`).
 
 ## Keys & custody
 - **Two seeds, two workflows**: `AGENT_SEED` only in `tick.yml` (trading); `MASTER_SEED` only in `buyback.yml` (claim, split, bridge, spot→perp transfer, agent approval, withdraw, buyback, burn). Because claiming/bridging needs the vault (master) key, all *money movement* lives in `buyback.ts` ("flows"), and `tick.ts` only trades — this preserves "trading key ≠ withdrawal key".

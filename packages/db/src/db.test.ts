@@ -62,7 +62,7 @@ describe("db repo (node:sqlite)", () => {
     expect((await r.takeAddress(db))?.idx).toBe(0);
     expect((await r.takeAddress(db))?.solVault).toBe("s1");
     expect(await r.takeAddress(db)).toBeNull();
-    expect(await r.poolStats(db)).toEqual({ free: 0, total: 2, maxIdx: 1 });
+    expect(await r.poolStats(db)).toEqual({ free: 0, unused: 0, total: 2, maxIdx: 1 });
 
     await r.createNonce(db, "n1");
     expect(await r.consumeNonce(db, "n1")).toBe(true);

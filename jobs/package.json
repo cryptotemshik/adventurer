@@ -1,0 +1,24 @@
+{
+  "name": "@bias/jobs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "tick": "tsx tick.ts",
+    "buyback": "tsx buyback.ts",
+    "reconcile": "tsx reconcile.ts",
+    "provision": "tsx provision.ts"
+  },
+  "dependencies": {
+    "@bias/chain": "workspace:*",
+    "@bias/db": "workspace:*",
+    "@bias/engine": "workspace:*",
+    "@bias/hl": "workspace:*",
+    "@bias/keys": "workspace:*",
+    "@bias/shared": "workspace:*",
+    "@solana/web3.js": "^1.99.0",
+    "decimal.js": "^10.6.0",
+    "drizzle-orm": "^0.45.4"
+  }
+}
