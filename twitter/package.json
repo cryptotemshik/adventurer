@@ -1,0 +1,6 @@
+{
+  "name": "@bias/twitter",
+  "private": true,
+  "type": "module",
+  "description": "X (twitter) launch content + image generator. Run from repo root: pnpm twitter:images"
+}

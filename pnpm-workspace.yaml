@@ -1,0 +1,10 @@
+packages:
+  - apps/*
+  - packages/*
+  - jobs
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - workerd
+  - bufferutil
+  - utf-8-validate

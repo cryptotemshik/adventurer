@@ -1,5 +1,13 @@
-.DS_Store
-.env
 node_modules
-archive
-.vscode
+.next
+.open-next
+.wrangler
+dist
+coverage
+*.tsbuildinfo
+.env
+.env.local
+.dev.vars
+.DS_Store
+test-results
+playwright-report
