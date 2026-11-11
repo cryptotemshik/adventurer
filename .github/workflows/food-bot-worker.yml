@@ -1,0 +1,47 @@
+# Deploys worker/worker.js to Cloudflare (Worker «andrey-food-bot»), sets its secrets and points the
+# Telegram bot webhook at it. Runs on pushes to the food-bot branch that touch the worker.
+# Needs CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, TELEGRAM_BOT_TOKEN, FOOD_BOT_GITHUB_TOKEN secrets.
+name: food-bot-worker
+on:
+  push:
+    branches: [food-bot]
+    paths: ["worker/**", ".github/workflows/food-bot-worker.yml"]
+permissions:
+  contents: read
+concurrency:
+  group: food-bot-worker
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      FOOD_BOT_GITHUB_TOKEN: ${{ secrets.FOOD_BOT_GITHUB_TOKEN }}
+      WRANGLER: npx --yes wrangler@3.114.17
+    steps:
+      - name: secrets present?
+        run: |
+          for v in CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID TELEGRAM_BOT_TOKEN FOOD_BOT_GITHUB_TOKEN; do
+            if [ -z "${!v}" ]; then echo "::error::secret $v is not set"; exit 1; fi
+          done
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: deploy worker
+        working-directory: worker
+        run: |
+          $WRANGLER deploy worker.js --name andrey-food-bot --compatibility-date 2024-11-01 2>&1 | tee deploy.log
+          printf '%s' "$TELEGRAM_BOT_TOKEN" | $WRANGLER secret put TELEGRAM_BOT_TOKEN --name andrey-food-bot
+          printf '%s' "$FOOD_BOT_GITHUB_TOKEN" | $WRANGLER secret put GITHUB_TOKEN --name andrey-food-bot
+          url=$(grep -oE 'https://[a-z0-9.-]+\.workers\.dev' deploy.log | head -1)
+          if [ -z "$url" ]; then echo "::error::no workers.dev URL in deploy output"; exit 1; fi
+          echo "worker url: $url"
+          echo "$url" > url.txt
+          sleep 5
+          curl -s "$url"; echo
+      - name: point the bot webhook at the worker
+        run: |
+          python3 -c "import sys; sys.path.insert(0, 'bot'); import send; send.set_webhook(open('worker/url.txt').read().strip()); print(send.call('getWebhookInfo'))"
