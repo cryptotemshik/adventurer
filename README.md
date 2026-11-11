@@ -11,3 +11,9 @@
 - Токен бота — секрет репозитория `TELEGRAM_BOT_TOKEN`.
 
 Формат поста описан в начале `bot/send.py`. Проверка без отправки: `DRY_RUN=1 python3 bot/send.py outbox/<файл>.json`.
+
+## Запросы «Хочу …»
+Админ канала пишет в канал сообщение, начинающееся с «Хочу» (например, «Хочу том ям»). Workflow
+`food-bot-requests` в основной ветке (`dapp`) раз в 5 минут забирает такие посты, запускает Claude Code
+(секрет `CLAUDE_CODE_OAUTH_TOKEN`) с `bot/request_prompt.md` и отвечает реплаем: 3 варианта из
+`restaurants.md`, от дешёвого к дорогому. Код — `bot/requests.py`.

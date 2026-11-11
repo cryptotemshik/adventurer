@@ -83,9 +83,11 @@ def plain(text):
     return html.unescape(re.sub(r"<[^>]+>", "", text))
 
 
-def send_text(chat, text):
+def send_text(chat, text, reply_to=None):
     for part in chunks(text):
         common = {"chat_id": chat, "link_preview_options": {"is_disabled": True}}
+        if reply_to:
+            common["reply_parameters"] = {"message_id": reply_to, "allow_sending_without_reply": True}
         res = call("sendMessage", text=part, parse_mode="HTML", **common)
         if not res.get("ok") and "entit" in res.get("description", "").lower():
             print(f"HTML rejected ({res.get('description')}), sending as plain text")
