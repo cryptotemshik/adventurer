@@ -1,0 +1,32 @@
+# Posts food suggestions to the Telegram channel. Lives only on the food-bot branch.
+# A scheduled Claude task adds outbox/<date>-<meal>.json; this sends it (waiting for send_at).
+# Needs the TELEGRAM_BOT_TOKEN repository secret.
+name: food-bot
+on:
+  push:
+    branches: [food-bot]
+    paths: ["outbox/**", "config.json"]
+permissions:
+  contents: read
+concurrency:
+  group: food-bot
+  cancel-in-progress: false
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 200
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: send new posts
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          BEFORE: ${{ github.event.before }}
+        run: |
+          files=""
+          if git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then
+            files=$(git diff --name-only --diff-filter=A "$BEFORE" HEAD -- 'outbox/*.json')
+          fi
+          echo "new posts: ${files:-none}"
+          python3 bot/send.py $files
