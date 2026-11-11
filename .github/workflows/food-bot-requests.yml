@@ -1,27 +1,35 @@
-# Answers «Хочу …» requests in the food Telegram channel every 5 minutes.
-# The bot code lives on the food-bot branch (bot/requests.py); this file only schedules it,
-# because GitHub runs scheduled workflows from the default branch only.
+# Answers «Хочу …» requests in the food Telegram channel.
+# Started by the Cloudflare Worker (food-bot branch: worker/worker.js) right after the request
+# is posted. The bot code lives on the food-bot branch (bot/requests.py).
 # Needs TELEGRAM_BOT_TOKEN and CLAUDE_CODE_OAUTH_TOKEN secrets.
 name: food-bot-requests
 on:
-  schedule:
-    - cron: "*/5 * * * *"
   workflow_dispatch:
+    inputs:
+      message_id:
+        description: Telegram message id of the request
+        required: true
+      text:
+        description: Request text
+        required: true
+      ack_id:
+        description: Message id of the «Ищу…» reply
+        required: false
 permissions:
   contents: read
-concurrency:
-  group: food-bot-requests
-  cancel-in-progress: false
 jobs:
   answer:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
           ref: food-bot
-      - name: answer requests
+      - name: answer request
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          REQ_MESSAGE_ID: ${{ inputs.message_id }}
+          REQ_TEXT: ${{ inputs.text }}
+          REQ_ACK_ID: ${{ inputs.ack_id }}
         run: python3 bot/requests.py
