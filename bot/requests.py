@@ -78,10 +78,37 @@ def ask_claude(request):
     return None
 
 
+def answer_one(chat, message_id, text, ack_id):
+    """Webhook mode: the Cloudflare Worker already replied «Ищу…» (ack_id) and started us."""
+    request = text[len(TRIGGER):].strip(" ,.:—-!") if text.lower().startswith(TRIGGER) else text
+    request = request or text
+    reply = None
+    if os.environ.get("CLAUDE_CODE_OAUTH_TOKEN"):
+        ensure_claude()
+        reply = ask_claude(request)
+    else:
+        print("CLAUDE_CODE_OAUTH_TOKEN is not set")
+    if reply:
+        send.send_text(chat, reply, reply_to=message_id)
+        if ack_id:
+            send.call("deleteMessage", chat_id=chat, message_id=ack_id)
+    else:
+        failed = "😕 Не получилось подобрать варианты. Попробуй написать запрос по-другому."
+        if ack_id:
+            send.call("editMessageText", chat_id=chat, message_id=ack_id, text=failed)
+        else:
+            send.send_text(chat, failed, reply_to=message_id)
+
+
 def main():
     chat = load_chat()
     if not chat:
         sys.exit("config.json has no chat_id")
+    if os.environ.get("REQ_MESSAGE_ID"):
+        ack = os.environ.get("REQ_ACK_ID", "")
+        answer_one(chat, int(os.environ["REQ_MESSAGE_ID"]), os.environ.get("REQ_TEXT", ""),
+                   int(ack) if ack.isdigit() else None)
+        return
     if not send.DRY_RUN and not os.environ.get("CLAUDE_CODE_OAUTH_TOKEN"):
         print("CLAUDE_CODE_OAUTH_TOKEN is not set; leaving requests for later")
         return

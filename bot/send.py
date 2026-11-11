@@ -15,6 +15,7 @@ The bot token comes from the TELEGRAM_BOT_TOKEN env var (a GitHub secret).
 DRY_RUN=1 prints what would be sent instead of calling Telegram.
 """
 import datetime
+import hashlib
 import html
 import json
 import os
@@ -128,7 +129,25 @@ def wait_until(send_at):
             time.sleep(delay)
 
 
-def check_setup(chat):
+def webhook_secret():
+    """Same derivation as worker/worker.js, so no extra secret is needed."""
+    return hashlib.sha256(f"food-bot:{TOKEN}".encode()).hexdigest()[:48]
+
+
+def set_webhook(url):
+    if url:
+        res = call("setWebhook", url=url, secret_token=webhook_secret(),
+                   allowed_updates=["channel_post"], drop_pending_updates=False)
+    else:
+        res = call("deleteWebhook")
+    print(f"webhook {'set to ' + url if url else 'removed'}: {res}")
+    if not res.get("ok"):
+        sys.exit("webhook setup failed")
+
+
+def check_setup(chat, webhook_url=None):
+    if webhook_url is not None:
+        set_webhook(webhook_url)
     if chat:
         res = call("getChat", chat_id=chat)
         if not res.get("ok"):
@@ -152,9 +171,10 @@ def main(files):
     if not TOKEN and not DRY_RUN:
         sys.exit("TELEGRAM_BOT_TOKEN is not set")
     with open(os.path.join(ROOT, "config.json"), encoding="utf-8") as f:
-        chat = str(json.load(f).get("chat_id", "")).strip()
+        config = json.load(f)
+    chat = str(config.get("chat_id", "")).strip()
     if not files:
-        check_setup(chat)
+        check_setup(chat, config.get("webhook_url"))
         return
     if not chat:
         check_setup(chat)
